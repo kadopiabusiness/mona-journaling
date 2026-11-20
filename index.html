@@ -91,11 +91,11 @@ textarea.field{resize:vertical;min-height:72px}
 .tag{font-size:12px;background:var(--chip);border-radius:999px;padding:2px 9px}
 .note{margin:6px 0 0;font-size:14px;color:var(--soft);white-space:pre-wrap}
 .empty{text-align:center;color:var(--soft);padding:24px 12px}
-nav{position:fixed;inset:auto 0 0;background:var(--card);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(5,minmax(0,1fr));align-items:center;padding:6px 6px calc(6px + env(safe-area-inset-bottom));z-index:5}
+nav{position:fixed;inset:auto 0 0;background:var(--card);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(5,minmax(0,1fr));align-items:center;padding:6px 4px calc(6px + env(safe-area-inset-bottom));z-index:5}
 nav button{border:0;background:none;padding:4px 2px;font-size:12px;color:var(--soft);min-height:52px;border-radius:12px;display:grid;justify-items:center;line-height:1.3}
 nav button span{font-size:20px}
 nav button[aria-pressed=true]{color:var(--ink);font-weight:800;background:var(--chip)}
-nav .add{width:56px;height:56px;border-radius:50%;background:var(--sel);color:var(--selInk);font-size:30px;line-height:1;justify-self:center;margin-top:-26px;box-shadow:0 6px 18px -6px #1c244088;min-height:0;display:block}
+nav .add{position:fixed;left:16px;bottom:calc(78px + env(safe-area-inset-bottom));width:56px;height:56px;border-radius:50%;background:var(--sel);color:var(--selInk);font-size:30px;line-height:1;box-shadow:0 6px 18px -6px #1c2440aa;min-height:0;display:block;padding:0}
 .sheet{position:fixed;inset:0;background:var(--bg);z-index:10;overflow-y:auto;overscroll-behavior:contain}
 .sheet .wrap{padding-bottom:120px}
 .top{display:flex;justify-content:space-between;align-items:center;gap:8px}
@@ -170,6 +170,16 @@ nav .add{width:56px;height:56px;border-radius:50%;background:var(--sel);color:va
 .sbars .goal{position:absolute;inset-inline:0;border-top:1.5px dashed var(--soft);opacity:.6}
 .sbars .goal span{position:absolute;inset-inline-start:0;top:-16px;font-size:10px;color:var(--soft)}
 .insight{background:var(--chip);border-radius:12px;padding:10px 12px;font-size:14px;margin-top:10px}
+.bk{display:flex;align-items:center;gap:10px;background:var(--card);border-radius:14px;padding:10px 12px;margin-bottom:6px}
+.bk .t{flex:1;border:0;background:none;text-align:start;padding:2px 0;font-size:15px;line-height:1.45}
+.bk .t small{display:block;color:var(--soft);font-size:12px}
+.bk.done .t{text-decoration:line-through;color:var(--soft)}
+.bk .go{border:1px solid var(--line);background:var(--chip);border-radius:999px;padding:4px 10px;font-size:13px;min-height:34px;flex:none}
+.bk input[type=checkbox]{width:22px;height:22px;accent-color:var(--m5);flex:none;margin:0}
+.sec{font-weight:800;font-size:15px;color:var(--soft);margin:18px 0 8px;display:flex;justify-content:space-between;align-items:center}
+.quick{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.quick button{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:6px 12px;min-height:38px;font-size:14px}
+.quick button.on{background:var(--sel);color:var(--selInk);border-color:var(--sel)}
 .toast{position:fixed;bottom:calc(100px + env(safe-area-inset-bottom));inset-inline:0;margin:auto;width:max-content;max-width:90vw;background:var(--sel);color:var(--selInk);padding:8px 16px;border-radius:999px;font-size:14px;z-index:20;opacity:0;transition:opacity .2s;pointer-events:none;text-align:center}
 .toast.on{opacity:1}
 [hidden]{display:none!important}
@@ -181,10 +191,12 @@ nav .add{width:56px;height:56px;border-radius:50%;background:var(--sel);color:va
   <section id="v-feed" hidden></section>
   <section id="v-habits" hidden></section>
   <section id="v-stats" hidden></section>
+  <section id="v-bucket" hidden></section>
 </div>
 <nav>
   <button data-v="today" aria-pressed="true"><span>📅</span>امروز</button>
   <button data-v="feed" aria-pressed="false"><span>📖</span>دفتر</button>
+  <button data-v="bucket" aria-pressed="false"><span>🪣</span>باکت‌لیست</button>
   <button class="add" id="add" aria-label="ثبت حال الان">+</button>
   <button data-v="habits" aria-pressed="false"><span>✅</span>عادت‌ها</button>
   <button data-v="stats" aria-pressed="false"><span>📊</span>آمار</button>
@@ -321,6 +333,8 @@ function checkinCard(k,d){
    <div class="moods ${am?'picked':''}">${mood}</div>
    ${am?`<div class="done-line"><button class="btn sm" data-e="${amId(k)}">📝 یادداشت</button>${ciDone(k,d)?'<button class="btn sm" id="ciClose">✓ بستن</button>':''}</div>`:''}
   </div>`}
+function weekCard(k){const w=weekStartOf(k),l=bucket().filter(x=>x.wk===w&&!placed(x)&&!bDone(x));if(!l.length)return'';
+  return`<div class="card"><h2>📌 برای این هفته</h2>${l.map(it=>`<div class="bk" style="background:var(--chip)"><button class="t" data-bopen="${it.id}">${it.e} ${esc(it.t)}</button><button class="go" data-bopen="${it.id}">📅 بچین</button></div>`).join('')}</div>`}
 function todayView(){
   const k=cur,t=today(),d=dayDoc(k),plan=planFor(k),i=dayIdx(k);
   const now=new Date(),hm=String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');
@@ -340,6 +354,7 @@ function todayView(){
   <div class="card"><h2>🎯 اهداف امروز <small>${fa(d.tasks.filter(x=>x.t&&x.d).length)} از ۳</small></h2>
    <p class="note" style="margin:-6px 0 4px">سه کار مهمی که امروز باید تمام شوند</p>
    ${d.tasks.map((x,n)=>`<div class="task ${x.d?'done':''}"><input type="checkbox" data-day="tasks.${n}.d" ${x.d?'checked':''} aria-label="هدف ${fa(n+1)} انجام شد"><input class="field" data-day="tasks.${n}.t" value="${esc(x.t)}" placeholder="${['هدف اول','هدف دوم','هدف سوم'][n]}"></div>`).join('')}</div>
+  ${weekCard(k)}
   <div class="card"><h2>💧 هیدراته کردن بدن <small>${fa(d.water)} از ۸</small></h2>
    <div class="cups"><button class="cup warm ${ginger?'on':''}" id="gingerCup" aria-label="آب ولرم با زنجبیل و عسل" aria-pressed="${ginger}"><span>🍯</span></button><span class="cupsep"></span>${[1,2,3,4,5,6,7,8].map(n=>`<button class="cup ${n<=d.water?'on':''}" data-cup="${n}" aria-label="لیوان ${fa(n)}"></button>`).join('')}</div></div>
   <div class="card"><h2>🗓️ برنامه‌ی ${k===t?'امروز':'این روز'} <small>${fa(pct)}٪</small></h2>
@@ -376,8 +391,9 @@ $('v-today').addEventListener('click',ev=>{
     put(id,{ts,mood:n,acts:e?.acts||[],note:e?.note||'',grat:e?.grat||['','','']});toast(`حال صبحت ثبت شد: ${MOODS[n][2]} ${MOODS[n][0]}`);if(!e&&ciDone(cur,d))ciOpen=null;return rerender()}
   if(b.dataset.cup){const n=+b.dataset.cup;d.water=d.water===n?n-1:n;saveDay(cur,d);if(d.water===8)toast('💧 ۸ لیوان! آفرین');return rerender()}
   if(b.dataset.ck){const x=planFor(cur).find(i=>i.id===b.dataset.ck);if(!x)return;
-    if(x.h){if(autoOn(d,x.h,cur)){autoMsg(x.h);return}d.habits[x.h]=!d.habits[x.h]}else d.done[x.id]=!d.done[x.id];
+    if(x.h){if(autoOn(d,x.h,cur)){autoMsg(x.h);return}d.habits[x.h]=!d.habits[x.h]}else{d.done[x.id]=!d.done[x.id];if(x.b&&d.done[x.id])toast('🎉 یکی از باکت‌لیست انجام شد')}
     saveDay(cur,d);return rerender()}
+  if(b.dataset.bopen)return openBucket(b.dataset.bopen);
   if(b.dataset.edit)return openItem(b.dataset.edit);
   if(b.id==='addItem')return openItem(null);
   if(b.id==='resetDay'){d.plan=null;saveDay(cur,d);toast('برنامه‌ی همیشگی برگشت');return rerender()}
@@ -469,6 +485,7 @@ $('sheet').addEventListener('click',ev=>{const b=ev.target.closest('button');if(
     if(b.dataset.emo){sheet.x.e=b.dataset.emo;$('iEv').textContent=b.dataset.emo;return}
     if(b.dataset.cat){sheet.x.c=b.dataset.cat;$('sheet').querySelectorAll('[data-cat]').forEach(z=>z.classList.toggle('on',z===b));return}
     if(b.id==='iSave')return applyItem(false);if(b.id==='iDel')return applyItem(true);return}
+  if(sheet.kind==='bucket')return bucketClick(b);
   if(b.dataset.m){sheet.mood=+b.dataset.m;$('mRow').classList.add('picked');$('sheet').querySelectorAll('.mood').forEach(x=>{x.classList.toggle('on',x===b);x.setAttribute('aria-pressed',x===b)});const s=$('mSave');s.disabled=false;s.textContent='ذخیره';return}
   if(b.dataset.a){const a=b.dataset.a;sheet.acts.has(a)?sheet.acts.delete(a):sheet.acts.add(a);b.classList.toggle('on');return}
   if(b.id==='addAct'){const l=$('newAct').value.trim();if(!l)return;const c=(settings().custom||[]).slice(),k='c'+Date.now().toString(36);c.push({k,l});put('settings',{custom:c});sheet.acts.add(k);
@@ -478,6 +495,66 @@ $('sheet').addEventListener('click',ev=>{const b=ev.target.closest('button');if(
     const id=sheet.id||'en-'+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
     put(id,{ts,mood:sheet.mood,acts:[...sheet.acts],note:$('snote').value.trim(),grat:sheet.grat.map(s=>s.trim())});closeSheet();refresh();toast('ذخیره شد 💛')}});
 $('sheet').addEventListener('input',ev=>{if(sheet?.kind==='mood'&&ev.target.dataset.g)sheet.grat[+ev.target.dataset.g]=ev.target.value});
+
+/* ---------- باکت‌لیست ---------- */
+let showDone=false;
+const bucket=()=>(docs.get('bucket')?.items||[]).map(x=>({...x}));
+const saveBucket=items=>put('bucket',{items});
+const bPid=it=>'b'+it.id;
+const placed=it=>!!(it.at&&it.at.k&&planFor(it.at.k).some(x=>x.id===bPid(it)));
+const bDone=it=>!!(it.done||(placed(it)&&dayDoc(it.at.k).done[bPid(it)]));
+const splitEmoji=v=>{const m=v.match(/^(\p{Extended_Pictographic}[\u{FE0F}\u{200D}\p{Extended_Pictographic}]*)\s*(.*)$/u);return m?[m[1],m[2]||v]:['⭐',v]};
+function unplace(it){if(it.at&&it.at.k){const d=dayDoc(it.at.k);if(d.plan){d.plan=d.plan.filter(x=>x.id!==bPid(it));saveDay(it.at.k,d)}}it.at=null}
+function placeOn(it,k,t,c){unplace(it);const d=dayDoc(k);d.plan=(d.plan||planFor(k)).filter(x=>x.id!==bPid(it));d.plan.push({id:bPid(it),t,e:it.e,l:it.t,c:c||it.c||'fun',h:'',b:it.id});saveDay(k,d);it.at={k,t};it.wk=null}
+const wkLabel=w=>{const t=weekStartOf(today());return w===t?'این هفته':w===shift(t,7)?'هفته‌ی بعد':'هفته‌ی '+fmt(w,{day:'numeric',month:'long'})};
+function bucketRow(it){const done=bDone(it),pl=placed(it);
+  const meta=pl?`📅 ${it.at.k===today()?'امروز':it.at.k===shift(today(),1)?'فردا':fmt(it.at.k,{weekday:'long',day:'numeric',month:'long'})} · ${faT(it.at.t)}`:it.wk?'📌 '+wkLabel(it.wk):'';
+  return`<div class="bk ${done?'done':''}"><input type="checkbox" data-bdone="${it.id}" ${done?'checked':''} aria-label="انجام شد"><button class="t" data-bopen="${it.id}">${it.e} ${esc(it.t)}${meta?`<small>${meta}</small>`:''}${it.note?`<small>${esc(it.note)}</small>`:''}</button>${!done&&!pl?`<button class="go" data-bopen="${it.id}">📅 بچین</button>`:''}</div>`}
+function bucketView(){
+  const items=bucket(),open=items.filter(x=>!bDone(x)),done=items.filter(bDone);
+  const ideas=open.filter(x=>!placed(x)&&!x.wk),weeks=open.filter(x=>!placed(x)&&x.wk).sort((a,b)=>a.wk<b.wk?-1:1),days=open.filter(placed).sort((a,b)=>(a.at.k+a.at.t)<(b.at.k+b.at.t)?-1:1);
+  $('v-bucket').innerHTML=`<h1>🪣 باکت‌لیست</h1>
+  <div class="card"><div class="inline" style="margin:0"><input class="field" id="bNew" placeholder="ایده‌ی تازه بنویس…" enterkeyhint="done"><button class="btn" id="bAdd">افزودن</button></div></div>
+  ${days.length?`<div class="sec">📅 در برنامه</div>${days.map(bucketRow).join('')}`:''}
+  ${weeks.length?`<div class="sec">📌 برای هفته‌ها</div>${weeks.map(bucketRow).join('')}`:''}
+  <div class="sec">💭 ایده‌ها <small style="font-weight:500">${fa(ideas.length)}</small></div>${ideas.length?ideas.map(bucketRow).join(''):'<div class="empty" style="padding:12px">هر چیزی به ذهنت رسید، بالا بنویس.</div>'}
+  ${done.length?`<div class="sec">✅ انجام‌شده <button class="btn sm" id="bShowDone">${showDone?'پنهان کن':'نشان بده ('+fa(done.length)+')'}</button></div>${showDone?done.map(bucketRow).join(''):''}`:''}`;
+}
+function addBucket(){const v=$('bNew').value.trim();if(!v)return;const[e,t]=splitEmoji(v);const items=bucket();items.unshift({id:Date.now().toString(36),e,t,note:'',created:Date.now(),done:false,at:null,wk:null,c:'fun'});saveBucket(items);toast('به باکت‌لیست اضافه شد');bucketView();$('bNew').focus()}
+$('v-bucket').addEventListener('keydown',ev=>{if(ev.target.id==='bNew'&&ev.key==='Enter')addBucket()});
+$('v-bucket').addEventListener('click',ev=>{const b=ev.target.closest('button');if(!b)return;
+  if(b.id==='bAdd')return addBucket();if(b.id==='bShowDone'){showDone=!showDone;return bucketView()}
+  if(b.dataset.bopen)return openBucket(b.dataset.bopen)});
+$('v-bucket').addEventListener('change',ev=>{const id=ev.target.dataset.bdone;if(!id)return;toggleBucketDone(id,ev.target.checked);rerender()});
+function toggleBucketDone(id,on){const items=bucket(),it=items.find(x=>x.id===id);if(!it)return;
+  if(placed(it)){const d=dayDoc(it.at.k);d.done[bPid(it)]=on;saveDay(it.at.k,d)}it.done=on;saveBucket(items);if(on)toast('🎉 آفرین! یکی از باکت‌لیست انجام شد')}
+function openBucket(id){const it=bucket().find(x=>x.id===id);if(!it)return;const t=today(),ws=weekStartOf(t);
+  sheet={kind:'bucket',id,mode:it.wk&&!placed(it)?'week':'day',k:placed(it)?it.at.k:t,tm:placed(it)?it.at.t:'18:00',wk:it.wk||ws,c:it.c||'fun'};
+  openSheet(`<div class="wrap"><div class="top"><h1 style="margin:0">${it.e} ${esc(it.t)}</h1><button class="x" data-close aria-label="بستن">×</button></div>
+  <div class="lab">عنوان</div><input class="field" id="bT" value="${esc(it.e+' '+it.t)}">
+  <div class="lab">یادداشت</div><textarea class="field" id="bN" placeholder="جزئیات، لینک، هزینه…">${esc(it.note||'')}</textarea>
+  <div class="q" style="margin-top:18px">📅 کِی انجامش بدهم؟</div>
+  <div class="seg"><label><input type="radio" name="bm" value="day" ${sheet.mode==='day'?'checked':''}> یک روز و ساعت مشخص</label><label><input type="radio" name="bm" value="week" ${sheet.mode==='week'?'checked':''}> یک هفته (روزش بعداً)</label></div>
+  <div id="bDay" ${sheet.mode==='day'?'':'hidden'}><div class="quick">${[[t,'امروز'],[shift(t,1),'فردا'],[shift(ws,6),'جمعه'],[shift(ws,7),'شنبه‌ی بعد']].map(([k,l])=>`<button data-bk="${k}" class="${sheet.k===k?'on':''}">${l}</button>`).join('')}</div>
+   <div class="times"><label>روز<input class="field" type="date" id="bD" value="${sheet.k}"></label><label>ساعت<input class="field" type="time" id="bTm" value="${sheet.tm}"></label></div>
+   <div class="lab">دسته و رنگ در پلنر</div><div class="colors">${Object.entries(CAT).map(([c,[n,col]])=>`<button data-bc="${c}" class="${sheet.c===c?'on':''}" style="background:${col}">${n}</button>`).join('')}</div></div>
+  <div id="bWeek" ${sheet.mode==='week'?'':'hidden'}><div class="quick">${[[ws,'این هفته'],[shift(ws,7),'هفته‌ی بعد'],[shift(ws,14),'دو هفته‌ی بعد']].map(([w,l])=>`<button data-bw="${w}" class="${sheet.wk===w?'on':''}">${l}</button>`).join('')}</div>
+   <p class="note">در صفحه‌ی «امروز» همان هفته نشانش می‌دهم تا روزش را انتخاب کنی.</p></div>
+  ${placed(it)||it.wk?'<p style="margin:14px 0 0"><button class="btn sm" id="bBack">↩️ برگرداندن به ایده‌ها</button></p>':''}
+  </div><div class="save"><div><button class="delb" id="bDel">🗑️ حذف</button><button class="pri" id="bSave">ذخیره</button></div></div>`)}
+function bucketClick(b){const s=sheet;
+  if(b.dataset.bk){s.k=b.dataset.bk;$('bD').value=s.k;$('sheet').querySelectorAll('[data-bk]').forEach(x=>x.classList.toggle('on',x===b));return}
+  if(b.dataset.bw){s.wk=b.dataset.bw;$('sheet').querySelectorAll('[data-bw]').forEach(x=>x.classList.toggle('on',x===b));return}
+  if(b.dataset.bc){s.c=b.dataset.bc;$('sheet').querySelectorAll('[data-bc]').forEach(x=>x.classList.toggle('on',x===b));return}
+  const items=bucket(),it=items.find(x=>x.id===s.id);if(!it)return closeSheet();
+  if(b.id==='bDel'){unplace(it);saveBucket(items.filter(x=>x.id!==it.id));closeSheet();refresh();toast('حذف شد');return}
+  if(b.id==='bBack'){unplace(it);it.wk=null;saveBucket(items);closeSheet();refresh();toast('برگشت به ایده‌ها');return}
+  if(b.id==='bSave'){const v=$('bT').value.trim();if(v){const[e,t]=splitEmoji(v);it.e=e;it.t=t}it.note=$('bN').value.trim();it.c=s.c;
+    const mode=document.querySelector('[name=bm]:checked').value;
+    if(mode==='day'){const k=$('bD').value||s.k,tm=$('bTm').value||'18:00';placeOn(it,k,tm,s.c);toast(`📅 در برنامه‌ی ${k===today()?'امروز':fmt(k,{weekday:'long',day:'numeric',month:'long'})} ساعت ${faT(tm)} چیده شد`)}
+    else{unplace(it);it.wk=s.wk;toast('📌 برای '+wkLabel(s.wk)+' گذاشته شد')}
+    saveBucket(items);closeSheet();refresh()}}
+$('sheet').addEventListener('change',ev=>{if(sheet?.kind!=='bucket')return;if(ev.target.name==='bm'){sheet.mode=ev.target.value;$('bDay').hidden=sheet.mode!=='day';$('bWeek').hidden=sheet.mode!=='week'}if(ev.target.id==='bD'){sheet.k=ev.target.value;$('sheet').querySelectorAll('[data-bk]').forEach(x=>x.classList.toggle('on',x.dataset.bk===sheet.k))}});
 
 /* ---------- پیگیری عادت‌ها ---------- */
 function habitsView(){
@@ -569,8 +646,8 @@ function statsView(){
   <div class="card"><h2>💡 چه چیزی حالم را بهتر می‌کند؟</h2>${effL.length?'<p class="note" style="margin:0 0 8px">میانگین حال روزهایی که این کار را کردی، در مقایسه با روزهایی که نکردی.</p>'+effL.map(([a,v])=>`<div class="hrow"><span>${esc(actLabel(a))}</span><div class="hbar"><span style="width:${Math.min(Math.abs(v)/2*100,100)}%;background:var(${v>=0?'--m5':'--m1'})"></span></div><b>${v>=0?'+':'−'}${fa(Math.abs(v).toFixed(1))}</b></div>`).join(''):'<div class="empty">برای این بخش، چند روز ثبت حال لازم است.</div>'}</div>
   ${NATIVE?nativeRemCard():webRemCard()}
   <div class="card"><h2>💾 پشتیبان‌گیری</h2>
-   <p class="note" style="margin:0 0 10px">همه‌ی نوشته‌هایت فقط روی همین گوشی ذخیره می‌شوند. هر هفته یک فایل پشتیبان بگیر و جای امنی نگهش دار (مثلاً «پیام‌های ذخیره‌شده»ی تلگرام یا گوگل درایو).</p>
-   <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn" id="backup" style="flex:1">⬇️ گرفتن فایل پشتیبان</button><button class="btn" id="restore" style="flex:1">⬆️ بازگردانی از فایل</button></div>
+   <p class="note" style="margin:0 0 10px">همه‌ی نوشته‌هایت فقط روی همین گوشی ذخیره می‌شوند. هر هفته یک فایل پشتیبان بگیر و جای امنی نگهش دار. «وارد کردن فایل» هم فایل پشتیبان را برمی‌گرداند و هم فایل برنامه‌ای را که برایت آماده شده.</p>
+   <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn" id="backup" style="flex:1">⬇️ گرفتن فایل پشتیبان</button><button class="btn" id="restore" style="flex:1">⬆️ وارد کردن فایل</button></div>
    <p class="note">آخرین پشتیبان: ${(()=>{const b=settings().lastBackup;return b?new Date(b).toLocaleDateString('fa-IR-u-ca-persian',{day:'numeric',month:'long'}):'هنوز نگرفته‌ای'})()}</p></div>`;
   if(chartRO)chartRO.disconnect();const box=$('chart');if(!box)return;const svg=box.querySelector('svg');
   const draw=()=>{const W=box.clientWidth,H=box.clientHeight,pl=8,pr=34,pt=10,pb=24,x=i=>W-pr-(i/(ks.length-1))*(W-pl-pr),yy=v=>pt+(5-v)/4*(H-pt-pb);
@@ -591,7 +668,7 @@ async function doBackup(){
 $('restoreFile').addEventListener('change',async ev=>{const f=ev.target.files[0];ev.target.value='';if(!f)return;
   try{const j=JSON.parse(await f.text()),list=Array.isArray(j)?j:j.docs;if(!Array.isArray(list))throw 0;let n=0;
     list.forEach(([id,v])=>{if(typeof id!=='string'||!v||typeof v!=='object')return;const l=docs.get(id);if(!l||(v.updated||0)>=(l.updated||0)){docs.set(id,v);n++;if(db)put(id,v)}});
-    saveLocal();refresh();toast(`✓ ${fa(n)} مورد بازگردانی شد`)}catch(e){toast('این فایل، فایل پشتیبان ژورنال نیست')}});
+    saveLocal();refresh();toast(`✓ ${fa(n)} مورد وارد شد`)}catch(e){toast('این فایل برای ژورنال نیست')}});
 $('v-stats').addEventListener('change',ev=>{if(!NATIVE)return;const on=ev.target.dataset.ron,rt=ev.target.dataset.rt;if(!on&&!rt)return;const l=remList(),r=l.find(x=>x.id==(on||rt));if(!r)return;
   if(on){r.on=ev.target.checked;if(r.on&&!NATIVE.notifAllowed())NATIVE.askNotif()}else if(ev.target.value)r.t=ev.target.value;
   saveRem(l);toast(r.on?`⏰ هر روز ساعت ${faT(r.t)} یادت می‌اندازم`:'یادآور خاموش شد')});
@@ -602,8 +679,8 @@ $('v-stats').addEventListener('click',ev=>{const b=ev.target.closest('button');i
   if(b.dataset.k){const k=b.dataset.k,l=entries().filter(e=>kOf(e.ts)===k),s=dayDoc(k).sleep;$('cDay').innerHTML=`<div class="day">${fmt(k,{weekday:'long',day:'numeric',month:'long'})}</div>`+(hasSleep(s)?`<p class="note" style="color:var(--ink)">😴 ${esc(sleepLine(s))}</p>`:'')+(l.length?l.map(entryCard).join(''):'<div class="empty">برای این روز حالی ثبت نشده.</div>')}});
 
 /* ---------- پوسته ---------- */
-function refresh(){({today:todayView,feed:feedView,habits:habitsView,stats:statsView})[view]()}
-function show(v){view=v;['today','feed','habits','stats'].forEach(x=>$('v-'+x).hidden=x!==v);document.querySelectorAll('nav [data-v]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.v===v));refresh();scrollTo(0,0)}
+function refresh(){({today:todayView,feed:feedView,habits:habitsView,stats:statsView,bucket:bucketView})[view]()}
+function show(v){view=v;['today','feed','habits','stats','bucket'].forEach(x=>$('v-'+x).hidden=x!==v);document.querySelectorAll('nav [data-v]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.v===v));refresh();scrollTo(0,0)}
 document.querySelectorAll('nav [data-v]').forEach(b=>b.onclick=()=>show(b.dataset.v));
 $('add').onclick=()=>openMood(null);
 try{const s=JSON.parse(localStorage.getItem(LSKEY));if(Array.isArray(s))docs=new Map(s)}catch(e){}
