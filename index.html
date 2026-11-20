@@ -32,7 +32,7 @@ h1{font-size:clamp(24px,5vw,30px);line-height:1.15;margin:4px 0 12px;font-weight
 h2{font-size:17px;margin:0 0 10px;font-weight:800;display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
 h2 small{font-size:13px;color:var(--soft);font-weight:500}
 .card{background:var(--card);border-radius:18px;padding:16px;margin-bottom:12px}
-.quote{font-weight:700;font-size:17px;line-height:1.6;margin:0;text-wrap:balance}
+.quote{font-weight:900;font-size:19px;line-height:1.7;margin:0;text-wrap:balance}
 .quote small{display:block;color:var(--soft);font-weight:400;font-size:13px}
 .lab{color:var(--soft);font-size:13px;margin:12px 0 4px}
 .q{font-weight:800;font-size:15px;margin:14px 0 6px;color:var(--ink)}
@@ -46,6 +46,13 @@ textarea.field{resize:vertical;min-height:72px}
 .cup{width:34px;height:42px;border:2px solid #0ea5e9;border-radius:4px 4px 11px 11px;background:none;position:relative;overflow:hidden;padding:0}
 .cup::after{content:"";position:absolute;inset:auto 0 0;height:0;background:#0ea5e9;opacity:.8;transition:height .25s}
 .cup.on::after{height:80%}
+.cup.warm{border-color:#f59e0b;width:40px;border-radius:6px 6px 14px 14px;display:grid;place-items:center}
+.cup.warm::after{background:#f59e0b;opacity:.55}
+.cup.warm span{position:relative;z-index:1;font-size:16px;opacity:.5}.cup.warm.on span{opacity:1}
+.cupsep{width:1px;align-self:stretch;background:var(--line);margin:0 4px}
+.num{width:24px;text-align:center;color:#f59e0b;font-weight:800;flex:none}
+.mini{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;border:0;text-align:start;font-size:15px;padding:12px 16px;border-inline-start:4px solid #f59e0b}
+.mini .ed{color:var(--soft);font-size:14px}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
 .daynav{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px}
 .daynav .c{text-align:center}.daynav b{display:block;font-size:20px;line-height:1.3}.daynav small{color:var(--soft);font-size:13px}
@@ -124,7 +131,7 @@ nav .add{width:56px;height:56px;border-radius:50%;background:var(--sel);color:va
 .times input{text-align:center;font-weight:700;color:var(--ink)}
 .dur{display:flex;align-items:center;gap:8px;margin-top:8px;padding:8px 12px;border-radius:12px;background:var(--chip);font-size:14px}
 .dur b{font-size:16px}
-.done-line{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:8px;font-size:14px;color:var(--soft)}
+.done-line{display:flex;align-items:center;justify-content:flex-end;gap:8px;margin-top:8px}
 .install{display:flex;align-items:center;gap:10px;border:1px solid var(--line)}
 .install p{flex:1;margin:0;font-size:14px}
 /* habit grid */
@@ -198,7 +205,7 @@ const DEF_ROUT=[
  ["morning","🌅",[["wake","☀️","بیداری ساعت ۰۶:۳۰"],["nophone","📵","نیم ساعت اول بدون گوشی"],["bed","🛏️","مرتب کردن تخت"],["face","🧊","شستن صورت با آب سرد"],["ginger","🍯","زنجبیل و عسل ناشتا"],["mind","🧘‍♀️","نیت و شکرگزاری"],["walk","🚶‍♀️","۳۰ دقیقه پیاده‌روی"]]],
  ["supp","💊",[["iron","🩸","قرص آهن"],["bvit","⚡","ب‌کمپلکس"],["omega","🐟","امگا۳"],["mag","🌙","منیزیم"]]],
  ["food","🥗",[["water8","💧","۸ لیوان آب"],["breakfast","🍳","صبحانه"],["fruit","🍎","میوه و سبزی"],["cook","🍲","آشپزی ناهار"],["healthy","🥦","غذای سالم، بدون فست‌فود"]]],
- ["care","🧴",[["skinAM","🧴","روتین پوست صبح"],["skinPM","✨","روتین پوست شب"],["teeth","🪥","مسواک صبح و شب"],["floss","🦷","نخ دندان"],["shower","🚿","دوش"]]],
+ ["care","🧴",[["skinAM","🧴","روتین پوست صبح"],["skinPM","✨","روتین پوست شب"],["teeth","🪥","مسواک صبح"],["floss","🦷","مسواک و نخ دندان شب"],["shower","🚿","دوش"]]],
  ["work","💼",[["freelance","💻","۳ ساعت فریلنس"],["kadopia","🎁","۳ ساعت کادوپیا"],["tasks3","🎯","انجام ۳ کار مهم"],["focus","🧠","کار عمیق بدون گوشی"]]],
  ["home","🏠",[["tidy","🧹","مرتب کردن روزانه‌ی خانه"],["chore","🧽","کار خانه‌ی امروز"]]],
  ["night","🌙",[["plan3","📝","نوشتن ۳ کار مهم فردا"],["screenoff","📴","بدون صفحه‌نمایش از ۲۲:۱۵"],["sleep23","😴","خواب ساعت ۲۳"]]]];
@@ -250,13 +257,13 @@ const amId=k=>'en-am-'+k;
 /* برنامه‌ی پیش‌فرض هفتگی؛ شنبه=۰ … جمعه=۶ */
 function defTpl(){
   const I=(t,e,l,c,h)=>({id:'i'+t.replace(':','')+(h||''),t,e,l,c,h:h||''});
-  const morning=[I('06:30','☀️','بیدار شدن؛ تا ساعت ۰۷:۰۰ سراغ گوشی نرو','morning','wake'),I('06:32','🛏️','مرتب کردن تخت','morning','bed'),I('06:35','🧊','شستن صورت با آب سرد','morning','face'),I('06:40','🍯','یک لیوان آب ولرم با زنجبیل و عسل (ناشتا)','morning','ginger'),I('06:45','🪥','مسواک و تمیز کردن زبان','care',''),I('06:50','🩸','خوردن قرص آهن','supp','iron'),I('06:52','🧘‍♀️','نوشتن نیت امروز و سه شکرگزاری','morning','mind'),I('07:00','✨','خواندن جمله‌ی امروز و مرور ۳ کار مهم','morning',''),I('07:05','🧴','روتین پوست صبح','care','skinAM'),I('07:15','🚶‍♀️','۳۰ دقیقه پیاده‌روی','morning','walk'),I('07:50','🚿','دوش کوتاه و لباس پوشیدن','care','shower'),I('08:05','🍳','صبحانه','food','breakfast'),I('08:20','⚡','قرص ب‌کمپلکس (بعد از صبحانه)','supp','bvit')];
-  const night=[I('19:30','🍽️','شام سبک با سالاد','food',''),I('21:30','🌙','خوردن منیزیم','supp','mag'),I('21:35','📝','نوشتن ۳ کار مهم فردا','night','plan3'),I('22:00','✨','روتین پوست شب، مسواک و نخ دندان','care','skinPM'),I('22:10','🤍','خواندن جمله‌ی شب و پر کردن «مرور شب»','night',''),I('22:15','📴','گوشی و تلویزیون خاموش؛ وقت کتاب','night','screenoff'),I('22:45','🛌','رفتن به تخت','night',''),I('23:00','😴','خواب','night','sleep23')];
-  const work=[I('08:30','🧹','مرتب کردن خانه و کار امروز: {chore}','home','chore'),I('08:45','💻','فریلنس (۳ ساعت)','work','freelance'),I('11:45','🍲','آشپزی ناهار','food','cook'),I('12:30','🥗','ناهار','food','healthy'),I('12:50','🐟','کپسول امگا۳ (بعد از ناهار)','supp','omega'),I('13:15','😌','استراحت','rest',''),I('14:30','🎁','کار روی کادوپیا (۳ ساعت)','work','kadopia'),I('16:00','🍎','میان‌وعده: میوه','food','fruit')];
+  const morning=[I('06:30','☀️','بیدار شدن','morning','wake'),I('06:32','🛏️','مرتب کردن تخت','morning','bed'),I('06:35','🧊','شستن صورت با آب سرد','morning','face'),I('06:40','🍯','آب ولرم با زنجبیل و عسل (ناشتا)','morning','ginger'),I('06:45','🪥','مسواک و تمیز کردن زبان','care','teeth'),I('06:50','🩸','قرص آهن','supp','iron'),I('06:52','🧘‍♀️','نیت امروز و سه شکرگزاری','morning','mind'),I('07:00','📵','نیم ساعت اول بیداری بدون گوشی','morning','nophone'),I('07:05','🧴','روتین پوست صبح','care','skinAM'),I('07:15','🚶‍♀️','۳۰ دقیقه پیاده‌روی','morning','walk'),I('07:50','🚿','دوش و آماده شدن','care','shower'),I('08:05','🍳','صبحانه','food','breakfast'),I('08:20','⚡','قرص ب‌کمپلکس','supp','bvit')];
+  const night=[I('19:30','🍽️','شام سبک با سالاد','food',''),I('21:30','🌙','قرص منیزیم','supp','mag'),I('21:35','📝','نوشتن ۳ کار مهم فردا','night','plan3'),I('22:00','✨','روتین پوست شب','care','skinPM'),I('22:05','🦷','مسواک و نخ دندان','care','floss'),I('22:10','🤍','مرور شب','night',''),I('22:15','📴','خاموش کردن صفحه‌ها؛ وقت کتاب','night','screenoff'),I('22:45','🛌','رفتن به تخت','night',''),I('23:00','😴','خواب','night','sleep23')];
+  const work=[I('08:25','🧹','مرتب کردن خانه','home','tidy'),I('08:35','🧽','{chore}','home','chore'),I('08:45','🧠','گوشی روی حالت تمرکز','work','focus'),I('08:50','💻','فریلنس (۳ ساعت)','work','freelance'),I('11:50','🍲','آشپزی ناهار','food','cook'),I('12:30','🥗','ناهار سالم','food','healthy'),I('12:50','🐟','کپسول امگا۳','supp','omega'),I('13:15','😌','استراحت','rest',''),I('14:30','🎁','کادوپیا (۳ ساعت)','work','kadopia'),I('16:00','🍎','میان‌وعده: میوه','food','fruit')];
   const eve={gym:I('17:30','🏋️‍♀️','باشگاه','sport','gym'),out:I('17:30','🛍️','کارهای بیرون و خرید','home',''),free:I('17:30','🌿','وقت آزاد','rest',''),fun:I('17:30','🎉','تفریح بیرون','fun','fun'),
-   yt:I('20:30','📺','یوتیوب (۱ ساعت)','fun','youtube'),doc:I('20:30','🎞️','مستند این هفته: {doc}','fun','doc'),mov:I('20:30','🎬','فیلم یا سریال','fun','movie'),book:I('20:30','📖','کتاب یا وقت آزاد','rest','')};
+   yt:I('20:30','📺','یوتیوب (۱ ساعت)','fun','youtube'),doc:I('20:30','🎞️','مستند: {doc}','fun','doc'),mov:I('20:30','🎬','فیلم یا سریال','fun','movie'),book:I('20:30','📖','کتاب یا وقت آزاد','rest','')};
   const d=(a,b)=>morning.concat(work,[a,b],night).map(x=>({...x}));
-  const fri=morning.concat([I('09:00','🛒','خرید هفتگی و آماده کردن غذا','home','chore'),I('11:00','🧾','مرور هفته (۱۵ دقیقه)','night',''),I('11:30','💅','ناخن و مراقبت هفتگی','care',''),I('12:30','🥗','ناهار','food','healthy'),I('12:50','🐟','کپسول امگا۳ (بعد از ناهار)','supp','omega'),I('13:30','😌','استراحت','rest',''),I('16:00','📺','یوتیوب (۱.۵ ساعت)','fun','youtube'),I('17:30','🎉','تفریح','fun','fun')],night).map(x=>({...x}));
+  const fri=morning.concat([I('08:30','🧹','مرتب کردن خانه','home','tidy'),I('09:00','🛒','خرید هفتگی و آماده کردن غذا','home','chore'),I('11:00','🧾','مرور هفته (۱۵ دقیقه)','night',''),I('11:30','💅','ناخن و مراقبت هفتگی','care',''),I('12:00','🍲','آشپزی ناهار','food','cook'),I('12:30','🥗','ناهار سالم','food','healthy'),I('12:50','🐟','کپسول امگا۳','supp','omega'),I('16:00','🍎','میان‌وعده: میوه','food','fruit'),I('13:30','😌','استراحت','rest',''),I('16:00','📺','یوتیوب (۱.۵ ساعت)','fun','youtube'),I('17:30','🎉','تفریح','fun','fun')],night).map(x=>({...x}));
   return{days:{0:d(eve.gym,eve.book),1:d(eve.out,eve.yt),2:d(eve.gym,eve.doc),3:d(eve.free,eve.mov),4:d(eve.gym,eve.book),5:d(eve.fun,eve.mov),6:fri}};
 }
 
@@ -294,80 +301,79 @@ const autoMsg=h=>toast('این مورد خودکار تیک خورده؛ '+AUTO[
 
 /* ---------- امروز ---------- */
 function greet(k){if(k!==today())return'🌅 شروع این روز';const h=new Date().getHours();return h<5?'🌙 هنوز بیداری مونا؟':h<12?'☀️ صبح بخیر مونا':h<17?'🌤️ روزت بخیر مونا':h<20?'🌇 عصر بخیر مونا':'🌙 شب بخیر مونا'}
+let ciOpen=null; /* null = خودکار */
+const ciDone=(k,d)=>!!(docs.get(amId(k))&&d.sleep.bed&&d.sleep.wake);
 function checkinCard(k,d){
   const s=d.sleep,dur=sleepDur(s),am=docs.get(amId(k)),isT=k===today();
+  if(ciDone(k,d)&&ciOpen!==k)return`<button class="card mini" id="ciOpen" aria-label="ویرایش خواب و حال صبح"><span>😴 <b>${durTxt(dur)}</b>${s.q?' '+SLEEPQ[s.q][1]:''}</span><span>${MOODS[am.mood][2]} <b>${MOODS[am.mood][0]}</b></span><span class="ed">✏️</span></button>`;
   const sq=[5,4,3,2,1].map(n=>`<button class="mood ${s.q===n?'on':''}" data-sq="${n}" aria-pressed="${s.q===n}" style="--fc:var(${MOODS[n][1]})"><span class="fe" style="--fc:var(${MOODS[n][1]})">${SLEEPQ[n][1]}</span>${SLEEPQ[n][0]}</button>`).join('');
   const mood=[5,4,3,2,1].map(n=>`<button class="mood ${am?.mood===n?'on':''}" data-am="${n}" aria-pressed="${am?.mood===n}">${face(n,54)}${MOODS[n][0]}</button>`).join('');
-  const durNote=dur?`<div class="dur">🛌 <span>مدت خواب:</span> <b>${durTxt(dur)}</b> ${dur<360?'· کمتر از ۶ ساعت 😕':dur>=420&&dur<=540?'· اندازه‌ی خوب 👌':''}</div>`:`<p class="note">ساعت خواب و بیداری را بزن تا مدت خوابت حساب شود.</p>`;
+  const durNote=dur?`<div class="dur">🛌 <b>${durTxt(dur)}</b> ${dur<360?'😕':dur>=420&&dur<=540?'👌':''}</div>`:'';
   return`<div class="card checkin"><h2>${greet(k)}</h2>
    <div class="q">😴 ${isT?'دیشب':'شب قبلش'} چطور خوابیدی؟</div>
    <div class="moods ${s.q?'picked':''}">${sq}</div>
    <div class="times"><label>🛌 ساعت خواب<input class="field" type="time" data-sl="bed" value="${s.bed}"></label><label>⏰ ساعت بیداری<input class="field" type="time" data-sl="wake" value="${s.wake}"></label></div>
    ${durNote}
-   <div class="lab">چه چیزی روی خوابت اثر گذاشت؟ (اختیاری)</div>
+   <div class="lab">چه چیزی روی خوابت اثر گذاشت؟</div>
    <div class="acts">${SFACT.map(([key,l])=>`<button class="act ${SFACT_POS.has(key)?'pos':'neg'} ${s.f.includes(key)?'on':''}" data-sf="${key}" aria-pressed="${s.f.includes(key)}">${l}</button>`).join('')}</div>
    <hr>
    <div class="q">${isT?'☀️ امروز صبح چه حسی داری؟':'☀️ صبح این روز چه حسی داشتی؟'}</div>
    <div class="moods ${am?'picked':''}">${mood}</div>
-   ${am?`<div class="done-line"><span>✓ حال صبح ثبت شد${am.note||am.acts?.length?' · با جزئیات':''}</span><button class="btn sm" data-e="${amId(k)}">✏️ جزئیات و یادداشت</button></div>`:`<p class="note">با یک ضربه ثبت می‌شود؛ هر وقت روز هم با دکمه‌ی + می‌توانی حالت را دوباره ثبت کنی.</p>`}
+   ${am?`<div class="done-line"><button class="btn sm" data-e="${amId(k)}">📝 یادداشت</button>${ciDone(k,d)?'<button class="btn sm" id="ciClose">✓ بستن</button>':''}</div>`:''}
   </div>`}
 function todayView(){
-  const k=cur,t=today(),d=dayDoc(k),plan=planFor(k),meta=habitMeta(),i=dayIdx(k);
+  const k=cur,t=today(),d=dayDoc(k),plan=planFor(k),i=dayIdx(k);
   const now=new Date(),hm=String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');
   let nowId=null;if(k===t)plan.forEach(x=>{if(x.t<=hm)nowId=x.id});
   const isOn=x=>x.h?(!!d.habits[x.h]||autoOn(d,x.h,k)):!!d.done[x.id];
-  const rItems=routines().flatMap(([,,a])=>a.map(x=>x[0]));
-  const extra=rItems.filter(h=>!plan.some(x=>x.h===h));
-  const doneN=plan.filter(isOn).length+extra.filter(h=>d.habits[h]||autoOn(d,h,k)).length;
-  const totN=plan.length+extra.length;
-  const pct=totN?Math.round(doneN/totN*100):0,night=k===t&&(now.getHours()>=18||now.getHours()<4);
+  const doneN=plan.filter(isOn).length,totN=plan.length,pct=totN?Math.round(doneN/totN*100):0;
+  const night=k===t&&(now.getHours()>=18||now.getHours()<4);
   const standalone=matchMedia('(display-mode: standalone)').matches||navigator.standalone;
+  const ginger=!!d.habits.ginger;
   $('v-today').innerHTML=`
-  <div class="daynav"><button class="rnd" id="dPrev" aria-label="روز قبل">›</button><div class="c"><b>${k===t?'امروز، ':''}${fmt(k,{weekday:'long'})}</b><small>${fmt(k,{day:'numeric',month:'long',year:'numeric'})}${d.plan?' · برنامه‌ی مخصوص این روز':''}</small></div><button class="rnd" id="dNext" aria-label="روز بعد">‹</button></div>
+  <div class="daynav"><button class="rnd" id="dPrev" aria-label="روز قبل">›</button><div class="c"><b>${k===t?'امروز، ':''}${fmt(k,{weekday:'long'})}</b><small>${fmt(k,{day:'numeric',month:'long',year:'numeric'})}</small></div><button class="rnd" id="dNext" aria-label="روز بعد">‹</button></div>
   ${k!==t?`<p style="text-align:center;margin:-6px 0 10px"><button class="btn sm" id="dToday">برگشت به امروز</button></p>`:''}
-  ${installEvt&&!standalone?`<div class="card install"><span style="font-size:26px">📲</span><p><b>نصب روی گوشی</b><br><span class="note" style="margin:0">مثل یک اپ واقعی باز می‌شود و بدون اینترنت هم کار می‌کند.</span></p><button class="btn sm" id="doInstall">نصب</button></div>`:''}
+  ${installEvt&&!standalone&&!NATIVE?`<div class="card install"><span style="font-size:26px">📲</span><p><b>نصب روی گوشی</b></p><button class="btn sm" id="doInstall">نصب</button></div>`:''}
   ${checkinCard(k,d)}
-  <div class="card"><p class="quote">${night?'🌙':'☀️'} ${esc(night?PM[i]:AM[i])}<small>${night?'جمله‌ی آرامش امشب':'جمله‌ی انرژی امروز'}</small></p></div>
-  <div class="card"><div class="prog"><div class="bar"><span style="width:${pct}%"></span></div><b>${fa(pct)}٪</b></div><p class="note" style="margin-top:6px">${fa(doneN)} از ${fa(totN)} کار و روتین انجام شد · ${pct>=80?'عالی پیش می‌روی 🎉':pct>=50?'نصف راه را رفتی 💪':'قدم‌به‌قدم 🌱'}</p></div>
-  <div class="card"><h2>🎯 تمرکز امروز</h2>
-   <input class="field" data-day="intent" value="${esc(d.intent)}" placeholder="نیت امروزم: امروز می‌خواهم…" aria-label="نیت امروز">
-   <div class="lab">سه کار مهمی که امروز باید تمام شوند</div>
-   ${d.tasks.map((x,n)=>`<div class="task ${x.d?'done':''}"><input type="checkbox" data-day="tasks.${n}.d" ${x.d?'checked':''} aria-label="کار ${fa(n+1)} انجام شد"><input class="field" data-day="tasks.${n}.t" value="${esc(x.t)}" placeholder="${['کار مهم اول','کار مهم دوم','کار مهم سوم'][n]}"></div>`).join('')}
-   <div class="lab">🙏 سه چیزی که امروز بابتشان شکرگزارم</div>${d.grat.map((g,n)=>`<div class="task"><span style="width:24px;text-align:center;color:#f59e0b;font-weight:800">${fa(n+1)}</span><input class="field" data-day="grat.${n}" value="${esc(g)}" placeholder="شکرگزارم برای…"></div>`).join('')}
-   <div class="lab">💧 آب امروز: ${fa(d.water)} از ۸ لیوان <span style="opacity:.8">(روی لیوان‌ها بزن)</span></div><div class="cups">${[1,2,3,4,5,6,7,8].map(n=>`<button class="cup ${n<=d.water?'on':''}" data-cup="${n}" aria-label="لیوان ${fa(n)}"></button>`).join('')}</div></div>
-  <div class="card"><h2>🗓️ برنامه‌ی ${k===t?'امروز':'این روز'} <small>برای ویرایش، روی هر کار بزن</small></h2>
-   <ul class="tl">${plan.map(x=>{const c=(CAT[x.c]||CAT.rest)[1],on=isOn(x);return`<li class="it ${on?'done':''} ${x.id===nowId?'now':''}" style="--c:${c}"><span class="tm">${faT(x.t)}</span><span class="em">${x.e||'•'}</span><button class="lb" data-edit="${x.id}">${esc(fill(x.l,k))}${x.id===nowId?'<small>⏳ الان وقت این کار است</small>':x.h&&meta[x.h]?`<small>${(CAT[meta[x.h].c]||CAT.rest)[0]} · در پیگیری عادت‌ها ثبت می‌شود</small>`:''}</button><button class="ck ${on?'on':''}" data-ck="${x.id}" aria-label="انجام شد" aria-pressed="${on}">${on?'✓':''}</button></li>`}).join('')}</ul>
-   <button class="addrow" id="addItem">➕ افزودن کار به برنامه</button>
+  <div class="card"><p class="quote">${night?'🌙':'☀️'} ${esc(night?PM[i]:AM[i])}</p></div>
+  <div class="card"><h2>🙏 شکرگزاری روز</h2>${d.grat.map((g,n)=>`<div class="task"><span class="num">${fa(n+1)}</span><input class="field" data-day="grat.${n}" value="${esc(g)}" placeholder="شکرگزارم برای…"></div>`).join('')}</div>
+  <div class="card"><h2>🎯 اهداف امروز <small>${fa(d.tasks.filter(x=>x.t&&x.d).length)} از ۳</small></h2>
+   <p class="note" style="margin:-6px 0 4px">سه کار مهمی که امروز باید تمام شوند</p>
+   ${d.tasks.map((x,n)=>`<div class="task ${x.d?'done':''}"><input type="checkbox" data-day="tasks.${n}.d" ${x.d?'checked':''} aria-label="هدف ${fa(n+1)} انجام شد"><input class="field" data-day="tasks.${n}.t" value="${esc(x.t)}" placeholder="${['هدف اول','هدف دوم','هدف سوم'][n]}"></div>`).join('')}</div>
+  <div class="card"><h2>💧 هیدراته کردن بدن <small>${fa(d.water)} از ۸</small></h2>
+   <div class="cups"><button class="cup warm ${ginger?'on':''}" id="gingerCup" aria-label="آب ولرم با زنجبیل و عسل" aria-pressed="${ginger}"><span>🍯</span></button><span class="cupsep"></span>${[1,2,3,4,5,6,7,8].map(n=>`<button class="cup ${n<=d.water?'on':''}" data-cup="${n}" aria-label="لیوان ${fa(n)}"></button>`).join('')}</div></div>
+  <div class="card"><h2>🗓️ برنامه‌ی ${k===t?'امروز':'این روز'} <small>${fa(pct)}٪</small></h2>
+   <div class="prog" style="margin:-4px 0 10px"><div class="bar"><span style="width:${pct}%"></span></div></div>
+   <ul class="tl">${plan.map(x=>{const c=(CAT[x.c]||CAT.rest)[1],on=isOn(x);return`<li class="it ${on?'done':''} ${x.id===nowId?'now':''}" style="--c:${c}"><span class="tm">${faT(x.t)}</span><span class="em">${x.e||'•'}</span><button class="lb" data-edit="${x.id}">${esc(fill(x.l,k))}</button><button class="ck ${on?'on':''}" data-ck="${x.id}" aria-label="انجام شد" aria-pressed="${on}">${on?'✓':''}</button></li>`}).join('')}</ul>
+   <button class="addrow" id="addItem">➕ افزودن به برنامه</button>
    ${d.plan?`<p style="text-align:center;margin:8px 0 0"><button class="btn sm" id="resetDay">↩️ برگشت به برنامه‌ی همیشگی ${WD[wdOf(k)]}</button></p>`:''}</div>
-  <div class="card"><h2>✅ روتین‌های روزانه <button class="btn sm" id="editR">${editR?'✔️ تمام':'✏️ ویرایش'}</button></h2>
-   ${editR?'<p class="note" style="margin:-4px 0 10px">برای حذف روی ✕ بزن، یا پایین هر دسته روتین تازه اضافه کن.</p>':''}
-   ${routines().map(([c,e,items],ci)=>{const col=CAT[c][1];return`<div class="cat" style="--c:${col}"><h3>${e} ${CAT[c][0]} <small>${fa(items.filter(([h])=>d.habits[h]||autoOn(d,h,k)).length)} از ${fa(items.length)}</small></h3><div class="chips">${items.map(([h,em,l])=>{const on=!!d.habits[h]||autoOn(d,h,k);return`<button class="hab ${on?'on':''}" style="--c:${col}" data-h="${h}" aria-pressed="${on}" ${AUTO[h]&&!editR?`title="خودکار: ${AUTO[h]}"`:''}>${em} ${esc(l)}${editR?`<span class="del" data-rm="${ci}:${h}" aria-label="حذف">✕</span>`:''}</button>`}).join('')}</div>
-   ${editR?`<div class="inline"><input class="field" data-newr="${ci}" placeholder="روتین تازه در «${CAT[c][0]}»، مثلاً 🧃 آب‌میوه"><button class="btn" data-addr="${ci}">افزودن</button></div>`:''}</div>`}).join('')}
-   ${editR?`<p style="text-align:center;margin:12px 0 0"><button class="btn sm" id="resetR">↩️ برگرداندن روتین‌های پیش‌فرض</button></p>`:''}</div>
-  <div class="card" style="border-top:4px solid #64748b"><h2>🌙 مرور شب</h2><p class="quote" style="font-size:15px;font-weight:500">🤍 ${esc(PM[i])}</p>
-   <div class="lab">🌟 بهترین لحظه‌ی امروز چه بود؟</div><textarea class="field" data-day="good" placeholder="یک لحظه‌ی خوب، هرقدر هم کوچک…">${esc(d.good)}</textarea>
+  <div class="card" style="border-top:4px solid #64748b"><h2>🌙 مرور شب</h2>
+   <div class="lab">🌟 بهترین لحظه‌ی امروز چه بود؟</div><textarea class="field" data-day="good">${esc(d.good)}</textarea>
    <div class="lab">📚 امروز چه چیزی یاد گرفتم؟</div><textarea class="field" data-day="learn">${esc(d.learn)}</textarea>
    <div class="lab">🚀 فردا چه چیزی را بهتر انجام بدهم؟</div><textarea class="field" data-day="tomorrow">${esc(d.tomorrow)}</textarea>
-   <div class="lab">📝 یادداشت آزاد</div><textarea class="field" data-day="note" placeholder="هر چیزی که دوست داری بنویسی…">${esc(d.note)}</textarea></div>`;
+   <div class="lab">📝 یادداشت آزاد</div><textarea class="field" data-day="note">${esc(d.note)}</textarea></div>`;
 }
 function setPath(o,p,v){const a=p.split('.');let x=o;for(let i=0;i<a.length-1;i++)x=x[a[i]];x[a[a.length-1]]=v}
 const rerender=()=>{const y=scrollY;refresh();scrollTo(0,y)};
 $('v-today').addEventListener('input',ev=>{const f=ev.target.dataset.day;if(!f)return;const d=dayDoc(cur);
   const v=ev.target.type==='checkbox'?ev.target.checked:ev.target.value;setPath(d,f,v);
   if(ev.target.type==='checkbox'){saveDay(cur,d);rerender()}else saveDayLater(cur,d)});
-$('v-today').addEventListener('change',ev=>{const f=ev.target.dataset.sl;if(!f)return;const d=dayDoc(cur);d.sleep[f]=ev.target.value;saveDay(cur,d);
+$('v-today').addEventListener('change',ev=>{const f=ev.target.dataset.sl;if(!f)return;const d=dayDoc(cur),was=ciDone(cur,d);d.sleep[f]=ev.target.value;saveDay(cur,d);if(!was&&ciDone(cur,d)&&ciOpen!==cur)toast('✓ خواب و حال صبح ثبت شد');
   if(f==='wake'&&autoOn(d,'wake',cur)&&!d.habits.wake)toast('☀️ سحرخیز! «بیداری ساعت ۰۶:۳۰» تیک خورد');rerender()});
 $('v-today').addEventListener('click',ev=>{
   const b=ev.target.closest('button');if(!b)return;const d=dayDoc(cur);
-  if(b.id==='dPrev'){cur=shift(cur,-1);return rerender()}
-  if(b.id==='dNext'){cur=shift(cur,1);return rerender()}
+  if(b.id==='dPrev'){cur=shift(cur,-1);ciOpen=null;return rerender()}
+  if(b.id==='dNext'){cur=shift(cur,1);ciOpen=null;return rerender()}
   if(b.id==='dToday'){cur=today();return rerender()}
   if(b.id==='doInstall'&&installEvt){installEvt.prompt();installEvt.userChoice.finally(()=>{installEvt=null;rerender()});return}
+  if(b.id==='ciOpen'){ciOpen=cur;return rerender()}
+  if(b.id==='ciClose'){ciOpen=null;return rerender()}
+  if(b.id==='gingerCup'){d.habits.ginger=!d.habits.ginger;saveDay(cur,d);return rerender()}
   if(b.dataset.sq){const n=+b.dataset.sq;d.sleep.q=d.sleep.q===n?0:n;saveDay(cur,d);return rerender()}
   if(b.dataset.sf){const f=b.dataset.sf,a=d.sleep.f;a.includes(f)?a.splice(a.indexOf(f),1):a.push(f);saveDay(cur,d);return rerender()}
   if(b.dataset.am){const n=+b.dataset.am,id=amId(cur),e=docs.get(id);
     const ts=e?e.ts:(cur===today()?Date.now():new Date(dateOf(cur).setHours(8,0,0,0)).getTime());
-    put(id,{ts,mood:n,acts:e?.acts||[],note:e?.note||'',grat:e?.grat||['','','']});toast(`حال صبحت ثبت شد: ${MOODS[n][2]} ${MOODS[n][0]}`);return rerender()}
+    put(id,{ts,mood:n,acts:e?.acts||[],note:e?.note||'',grat:e?.grat||['','','']});toast(`حال صبحت ثبت شد: ${MOODS[n][2]} ${MOODS[n][0]}`);if(!e&&ciDone(cur,d))ciOpen=null;return rerender()}
   if(b.dataset.cup){const n=+b.dataset.cup;d.water=d.water===n?n-1:n;saveDay(cur,d);if(d.water===8)toast('💧 ۸ لیوان! آفرین');return rerender()}
   if(b.dataset.ck){const x=planFor(cur).find(i=>i.id===b.dataset.ck);if(!x)return;
     if(x.h){if(autoOn(d,x.h,cur)){autoMsg(x.h);return}d.habits[x.h]=!d.habits[x.h]}else d.done[x.id]=!d.done[x.id];
@@ -402,12 +408,14 @@ function openItem(id){
   ${x.l.includes('{')?'<p class="note">«{doc}» خودکار با اسم مستند همان هفته و «{chore}» با کار خانه‌ی همان روز جایگزین می‌شود.</p>':''}
   <div class="lab">ایموجی: <b id="iEv" style="font-size:22px">${x.e}</b></div><div class="emo">${EMOJIS.map(e=>`<button data-emo="${e}">${e}</button>`).join('')}</div>
   <div class="lab">دسته و رنگ</div><div class="colors">${Object.entries(CAT).map(([c,[n,col]])=>`<button data-cat="${c}" class="${x.c===c?'on':''}" style="background:${col}">${n}</button>`).join('')}</div>
-  <div class="lab">با تیک زدن این کار، کدام عادت ثبت شود؟</div><select class="field" id="iH"><option value="">هیچ‌کدام</option>${Object.entries(meta).map(([k,m])=>`<option value="${k}" ${x.h===k?'selected':''}>${m.e} ${esc(m.l)}</option>`).join('')}</select>
+  <div class="lab">عادت مربوط (تیکش در «عادت‌ها» ثبت می‌شود)</div><select class="field" id="iH"><option value="">هیچ‌کدام</option><option value="__new">➕ عادت تازه با همین عنوان</option>${Object.entries(meta).map(([k,m])=>`<option value="${k}" ${x.h===k?'selected':''}>${m.e} ${esc(m.l)}</option>`).join('')}</select>
   <div class="lab">این تغییر برای کدام روزها باشد؟</div><div class="seg"><label><input type="radio" name="sc" value="day" checked> فقط همین روز (${fmt(cur,{day:'numeric',month:'long'})})</label><label><input type="radio" name="sc" value="all"> همه‌ی ${w}‌ها</label></div>
   </div><div class="save"><div>${id?'<button class="delb" id="iDel">🗑️ حذف</button>':''}<button class="pri" id="iSave">ذخیره</button></div></div>`);
 }
 function applyItem(del){
   const s=sheet,x=s.x;x.t=$('iT').value||x.t;x.l=$('iL').value.trim()||x.l||'کار تازه';x.h=$('iH').value;
+  if(x.h==='__new'&&!del){const cats=JSON.parse(JSON.stringify(routines())),key='r'+Date.now().toString(36);let c=cats.find(z=>z[0]===x.c);if(!c){c=[x.c,x.e,[]];cats.push(c)}c[2].push([key,x.e,x.l.replace(/\{(doc|chore)\}/g,'').trim()||x.l]);put('routines',{cats});x.h=key}
+  else if(x.h==='__new')x.h='';
   const scope=document.querySelector('[name=sc]:checked').value;
   const edit=list=>{list=list.slice();const i=s.id?list.findIndex(z=>z.id===s.id):-1;
     if(del){if(i>=0)list.splice(i,1)}else if(i>=0)list[i]={...x,id:s.id};else list.push({...x,id:'u'+Date.now().toString(36)});return list};
