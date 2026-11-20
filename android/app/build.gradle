@@ -1,0 +1,27 @@
+plugins { id 'com.android.application' }
+def vc = (System.getenv('VERSION_CODE') ?: '1') as int
+android {
+    namespace 'ir.mona.journal'
+    compileSdk 34
+    defaultConfig {
+        applicationId 'ir.mona.journal'
+        minSdk 29
+        targetSdk 34
+        versionCode vc
+        versionName "1.0." + vc
+    }
+    signingConfigs {
+        release {
+            // keystore comes from GitHub secrets (see .github/workflows/apk.yml)
+            storeFile file(System.getenv('KEYSTORE_FILE') ?: 'missing.jks')
+            storePassword System.getenv('KEYSTORE_PASS')
+            keyAlias 'mona'
+            keyPassword System.getenv('KEYSTORE_PASS')
+        }
+    }
+    buildTypes {
+        release { minifyEnabled false; signingConfig signingConfigs.release }
+    }
+    compileOptions { sourceCompatibility JavaVersion.VERSION_17; targetCompatibility JavaVersion.VERSION_17 }
+}
+dependencies { implementation 'androidx.webkit:webkit:1.11.0' }

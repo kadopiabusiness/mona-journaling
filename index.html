@@ -225,6 +225,7 @@ const NEGSET=new Set(NEG.map(x=>x[0]).concat(["sleepbad","badsleep"]));
 
 const START=new Date(2026,10,20),WEEK0=new Date(2026,10,21);
 const $=id=>document.getElementById(id);
+const NATIVE=window.Android||null; /* داخل اپ اندروید (APK) */
 const fa=n=>Number(n).toLocaleString('fa-IR');
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const keyOf=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
@@ -498,6 +499,18 @@ function remindUrl([t,e,l,body]){const n=new Date(),[h,m]=t.split(':').map(Numbe
   const f=d=>d.getFullYear()+String(d.getMonth()+1).padStart(2,'0')+String(d.getDate()).padStart(2,'0')+'T'+String(d.getHours()).padStart(2,'0')+String(d.getMinutes()).padStart(2,'0')+'00';
   const en=new Date(s.getTime()+10*6e4),tz=Intl.DateTimeFormat().resolvedOptions().timeZone||'Asia/Tehran';
   return'https://calendar.google.com/calendar/render?'+new URLSearchParams({action:'TEMPLATE',text:e+' '+l,details:body+'\n\nاز ژورنال روزانه',dates:f(s)+'/'+f(en),ctz:tz,recur:'RRULE:FREQ=DAILY'})}
+function webRemCard(){return`<div class="card"><h2>⏰ یادآورهای روزانه</h2>
+   <p class="note" style="margin:0 0 10px">روی هر کدام بزن تا به‌صورت تکرار روزانه در Google Calendar گوشی‌ات ثبت شود؛ تقویم سر وقت خبرت می‌کند.</p>
+   ${REMIND.map(([t,e,l],i)=>`<button class="btn full" data-rem="${i}" style="display:flex;justify-content:space-between;align-items:center;margin-top:6px"><span>${e} ${l}</span><b>${faT(t)}</b></button>`).join('')}</div>`}
+function remList(){let l=null;try{l=JSON.parse(NATIVE.getReminders()||'null')}catch(e){}
+  return Array.isArray(l)&&l.length?l:REMIND.map(([t,e,l,b],i)=>({id:i+1,t,e,l,title:e+' '+l,body:b,on:false}))}
+function saveRem(l){NATIVE.setReminders(JSON.stringify(l.map(r=>({...r,title:r.e+' '+r.l}))))}
+function nativeRemCard(){const l=remList(),ok=NATIVE.notifAllowed();
+  return`<div class="card"><h2>⏰ یادآورهای روزانه</h2>
+   <p class="note" style="margin:0 0 10px">سر ساعت نوتیفیکیشن می‌گیری، حتی وقتی اپ بسته است. برای روشن کردن هر یادآور تیکش را بزن؛ ساعت را هم می‌توانی عوض کنی.</p>
+   ${ok?'':'<p class="insight" style="margin:0 0 8px">🔕 اجازه‌ی نوتیفیکیشن خاموش است. یک یادآور را روشن کن تا اجازه خواسته شود، یا از تنظیمات گوشی برای «ژورنال مونا» روشنش کن.</p>'}
+   ${l.map(r=>`<div class="task"><input type="checkbox" data-ron="${r.id}" ${r.on?'checked':''} aria-label="روشن/خاموش ${esc(r.l)}"><span style="flex:1;font-size:15px">${r.e} ${esc(r.l)}</span><input class="field" type="time" data-rt="${r.id}" value="${r.t}" style="width:auto;flex:none;text-align:center"></div>`).join('')}
+   <p style="margin:10px 0 0"><button class="btn sm" id="remTest">🔔 فرستادن یک نوتیفیکیشن آزمایشی</button></p></div>`}
 let chartRO=null;
 function sleepCard(ks,dm){
   const t=today(),rows=ks.map(k=>[k,dayDoc(k).sleep]),withD=rows.filter(([,s])=>sleepDur(s)),withQ=rows.filter(([,s])=>s.q);
@@ -546,9 +559,7 @@ function statsView(){
   <div class="card"><h2>😊 حال‌ها چند بار؟</h2>${[5,4,3,2,1].map(n=>`<div class="hrow"><span>${MOODS[n][2]} ${MOODS[n][0]}</span><div class="hbar"><span style="width:${es.length?cnt[n]/es.length*100:0}%;background:var(${MOODS[n][1]})"></span></div><b>${fa(cnt[n])}</b></div>`).join('')}</div>
   <div class="card"><h2>🏆 پرتکرارترین‌ها <small>چند روز از ۳۰ روز</small></h2>${top.length?top.map(([a,c])=>`<div class="hrow"><span>${esc(actLabel(a))}</span><div class="hbar"><span style="width:${c/30*100}%;background:${NEGSET.has(a)?'var(--m1)':'var(--m5)'}"></span></div><b>${fa(c)}</b></div>`).join(''):'<div class="empty">هنوز چیزی ثبت نشده.</div>'}</div>
   <div class="card"><h2>💡 چه چیزی حالم را بهتر می‌کند؟</h2>${effL.length?'<p class="note" style="margin:0 0 8px">میانگین حال روزهایی که این کار را کردی، در مقایسه با روزهایی که نکردی.</p>'+effL.map(([a,v])=>`<div class="hrow"><span>${esc(actLabel(a))}</span><div class="hbar"><span style="width:${Math.min(Math.abs(v)/2*100,100)}%;background:var(${v>=0?'--m5':'--m1'})"></span></div><b>${v>=0?'+':'−'}${fa(Math.abs(v).toFixed(1))}</b></div>`).join(''):'<div class="empty">برای این بخش، چند روز ثبت حال لازم است.</div>'}</div>
-  <div class="card"><h2>⏰ یادآورهای روزانه</h2>
-   <p class="note" style="margin:0 0 10px">روی هر کدام بزن تا به‌صورت تکرار روزانه در Google Calendar گوشی‌ات ثبت شود؛ تقویم سر وقت خبرت می‌کند. ساعت را بعداً در خود تقویم هم می‌توانی عوض کنی.</p>
-   ${REMIND.map(([t,e,l],i)=>`<button class="btn full" data-rem="${i}" style="display:flex;justify-content:space-between;align-items:center;margin-top:6px"><span>${e} ${l}</span><b>${faT(t)}</b></button>`).join('')}</div>
+  ${NATIVE?nativeRemCard():webRemCard()}
   <div class="card"><h2>💾 پشتیبان‌گیری</h2>
    <p class="note" style="margin:0 0 10px">همه‌ی نوشته‌هایت فقط روی همین گوشی ذخیره می‌شوند. هر هفته یک فایل پشتیبان بگیر و جای امنی نگهش دار (مثلاً «پیام‌های ذخیره‌شده»ی تلگرام یا گوگل درایو).</p>
    <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn" id="backup" style="flex:1">⬇️ گرفتن فایل پشتیبان</button><button class="btn" id="restore" style="flex:1">⬆️ بازگردانی از فایل</button></div>
@@ -565,6 +576,7 @@ async function doBackup(){
   const data=JSON.stringify({app:'mona-journal',v:2,at:Date.now(),docs:[...docs]});
   const name='journal-backup-'+today()+'.json',file=new File([data],name,{type:'application/json'});
   const mark=()=>{const s={...settings(),lastBackup:Date.now()};put('settings',s);refresh()};
+  if(NATIVE){if(NATIVE.saveFile(name,data)){mark();toast('✓ در پوشه‌ی Download/MonaJournal ذخیره شد')}else toast('ذخیره‌ی فایل ممکن نشد');return}
   try{if(navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({files:[file],title:'پشتیبان ژورنال'});mark();toast('✓ فایل پشتیبان آماده شد');return}}catch(e){if(e&&e.name==='AbortError')return}
   try{const a=document.createElement('a');a.href=URL.createObjectURL(file);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},2000);mark();toast('✓ در پوشه‌ی Downloads ذخیره شد')}catch(e){toast('ذخیره‌ی فایل ممکن نشد')}
 }
@@ -572,7 +584,11 @@ $('restoreFile').addEventListener('change',async ev=>{const f=ev.target.files[0]
   try{const j=JSON.parse(await f.text()),list=Array.isArray(j)?j:j.docs;if(!Array.isArray(list))throw 0;let n=0;
     list.forEach(([id,v])=>{if(typeof id!=='string'||!v||typeof v!=='object')return;const l=docs.get(id);if(!l||(v.updated||0)>=(l.updated||0)){docs.set(id,v);n++;if(db)put(id,v)}});
     saveLocal();refresh();toast(`✓ ${fa(n)} مورد بازگردانی شد`)}catch(e){toast('این فایل، فایل پشتیبان ژورنال نیست')}});
+$('v-stats').addEventListener('change',ev=>{if(!NATIVE)return;const on=ev.target.dataset.ron,rt=ev.target.dataset.rt;if(!on&&!rt)return;const l=remList(),r=l.find(x=>x.id==(on||rt));if(!r)return;
+  if(on){r.on=ev.target.checked;if(r.on&&!NATIVE.notifAllowed())NATIVE.askNotif()}else if(ev.target.value)r.t=ev.target.value;
+  saveRem(l);toast(r.on?`⏰ هر روز ساعت ${faT(r.t)} یادت می‌اندازم`:'یادآور خاموش شد')});
 $('v-stats').addEventListener('click',ev=>{const b=ev.target.closest('button');if(!b)return;
+  if(b.id==='remTest'&&NATIVE){if(!NATIVE.notifAllowed()){NATIVE.askNotif();return}NATIVE.testNotif();return}
   if(b.dataset.rem){open(remindUrl(REMIND[+b.dataset.rem]),'_blank');return}if(b.id==='backup')return doBackup();if(b.id==='restore')return $('restoreFile').click();
   if(b.id==='cPrev'){calOff++;return statsView()}if(b.id==='cNext'&&calOff>0){calOff--;return statsView()}
   if(b.dataset.k){const k=b.dataset.k,l=entries().filter(e=>kOf(e.ts)===k),s=dayDoc(k).sleep;$('cDay').innerHTML=`<div class="day">${fmt(k,{weekday:'long',day:'numeric',month:'long'})}</div>`+(hasSleep(s)?`<p class="note" style="color:var(--ink)">😴 ${esc(sleepLine(s))}</p>`:'')+(l.length?l.map(entryCard).join(''):'<div class="empty">برای این روز حالی ثبت نشده.</div>')}});
@@ -587,11 +603,11 @@ if(location.hash==='#s')history.replaceState(null,'',location.pathname+location.
 show('today');
 if(new URLSearchParams(location.search).has('add')){history.replaceState(null,'',location.pathname);openMood(null)}
 /* وقتی اپ بعد از چند ساعت دوباره باز می‌شود، «امروز» را به‌روز کن */
-let lastDay=today();document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&today()!==lastDay){if(cur===lastDay)cur=today();lastDay=today();if(!sheet)refresh()}});
+let lastDay=today();document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&NATIVE&&view==='stats'&&!sheet)rerender();if(document.visibilityState==='visible'&&today()!==lastDay){if(cur===lastDay)cur=today();lastDay=today();if(!sheet)refresh()}});
 /* PWA */
 addEventListener('beforeinstallprompt',e=>{e.preventDefault();installEvt=e;if(view==='today'&&!sheet)rerender()});
 addEventListener('appinstalled',()=>{installEvt=null;toast('📲 نصب شد! از صفحه‌ی اصلی گوشی بازش کن');if(view==='today'&&!sheet)rerender()});
-if('serviceWorker' in navigator&&location.protocol.startsWith('http'))navigator.serviceWorker.register('sw.js').catch(()=>{});
+if(!NATIVE&&'serviceWorker' in navigator&&location.protocol.startsWith('http'))navigator.serviceWorker.register('sw.js').catch(()=>{});
 try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist()}catch(e){}
 /* همگام‌سازی ابری (فقط وقتی داخل Claude باز شود) */
 (async()=>{try{const c=window.claude;if(!c||!c.use)return;const[u,d]=await Promise.all([c.use('user'),c.use('db')]);if(!u||!d)return;const id=await u.id();if(!id)return;
