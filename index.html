@@ -107,6 +107,8 @@ nav .add{position:fixed;left:16px;bottom:calc(78px + env(safe-area-inset-bottom)
 /* emoji faces */
 .fe{display:grid;place-items:center;border-radius:50%;line-height:1;flex:none}
 .fe svg{display:block}
+.fe{background:color-mix(in srgb,var(--fc,#a78bfa) 26%,transparent)}.fe .fi{width:86%;height:86%;display:block;pointer-events:none}
+img.ej{width:1.2em;height:1.2em;vertical-align:-.24em;display:inline-block;object-fit:contain;pointer-events:none;-webkit-user-drag:none}
 .moods{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:4px;margin:6px 0 4px}
 .mood{border:0;background:none;display:grid;justify-items:center;gap:4px;padding:6px 0;border-radius:14px;font-size:13px;color:var(--soft)}
 .mood .fe{width:min(52px,13.5vw);height:min(52px,13.5vw);transition:transform .15s,filter .15s,opacity .15s}
@@ -220,7 +222,7 @@ const PM=["امروز هر کاری از دستم برمی‌آمد انجام �
 const CAT={morning:["صبح","#f59e0b"],supp:["مکمل‌ها","#06b6d4"],food:["تغذیه","#65a30d"],care:["مراقبت از خود","#ec4899"],work:["کار","#6366f1"],home:["خانه","#14b8a6"],chakra:["چاکرا","#a855f7"],sport:["ورزش","#ef4444"],fun:["تفریح","#f97316"],rest:["استراحت","#a8a29e"],night:["شب","#64748b"]};
 const DEF_ROUT=[
  ["morning","🌅",[["wake","⏰","بیداری ۰۶:۳۰"],["nophone","📵","نیم ساعت اول بدون گوشی"],["bed","🛏️","مرتب کردن تخت"],["face","🧊","صورت با آب یخ"],["ginger","🍯","زنجبیل و عسل"],["mind","🧘‍♀️","نیت و شکرگزاری"],["walk","🚶‍♀️","پیاده‌روی"]]],
- ["supp","💊",[["iron","🩸","آهن"],["bvit","⚡","ب‌کمپلکس یا زینک"],["omega","🐟","امگا۳"],["mag","🌙","منیزیم"]]],
+ ["supp","💊",[["iron","🩸","آهن"],["bvit","⚡","ب‌کمپلکس"],["zinc","🛡️","زینک"],["omega","🐟","امگا۳"],["mag","🌙","منیزیم"]]],
  ["food","🥗",[["water8","💧","۸ لیوان آب"],["fruit","🥕","میوه و سبزی"],["milk","🥛","یک لیوان شیر"]]],
  ["care","🧴",[["skinAM","🧴","پوست صبح"],["skinPM","✨","پوست شب"],["teeth","🪥","مسواک صبح"],["floss","🦷","مسواک و نخ دندان شب"]]],
  ["work","💼",[["freelance","💻","فریلنس ۳ ساعت"],["kadopia","🎁","کادوپیا ۳ ساعت"],["tasks3","🎯","۳ کار مهم"],["focus","🧠","تمرکز بدون گوشی"]]],
@@ -229,7 +231,7 @@ const DEF_ROUT=[
  ["night","🌙",[["plan3","📝","۳ کار مهم فردا"],["screenoff","📴","بدون صفحه از ۲۲:۱۵"],["sleep23","😴","خواب ساعت ۲۳"]]]];
 const WEEKLY=[["gym","🏋️‍♀️","باشگاه (TRX)",3,"sport"],["fun","🎉","تفریح",2,"fun"],["movie","🎬","فیلم یا سریال",2,"fun"],["doc","🎞️","مستند",1,"fun"],["youtube","📺","یوتیوب‌گردی",2,"fun"]];
 /* هدف هفتگی عادت‌هایی که هر روز نیستند */
-const TARGET={freelance:5,kadopia:5,tasks3:6,focus:5,chore:6,tidy:5,omega:4,cook:5};
+const TARGET={bvit:3,zinc:3,freelance:5,kadopia:5,tasks3:6,focus:5,chore:6,tidy:5,omega:4,cook:5};
 const DOCS=["The Social Dilemma (۲۰۲۰)","Jiro Dreams of Sushi (۲۰۱۱)","My Octopus Teacher (۲۰۲۰)","Free Solo (۲۰۱۸)"];
 const CHORE=["جاروبرقی کل خانه + تعویض ملحفه و حوله","سرویس بهداشتی و حمام","لباس‌شویی + تا کردن","یخچال + لیست خرید (قبل از رفتن)","","گردگیری، سطوح و آینه‌ها","خرید هفتگی + آماده‌سازی غذا"];
 const MONTHLY=["اجاق، فر و هود","کابینت‌ها و کشوها","پنجره‌ها و پرده‌ها","مرتب کردن کمد و کنار گذاشتن چیزهای اضافه"];
@@ -260,9 +262,9 @@ const WD=["شنبه","یکشنبه","دوشنبه","سه‌شنبه","چهارش
 const EMOJIS=["☀️","🛏️","🧊","🍯","🪥","💊","🧘‍♀️","✨","🧴","🚶‍♀️","🚿","🍳","🧹","💻","🍲","🥗","😌","🎁","🍎","🏋️‍♀️","🎉","🛍️","🍽️","🎬","🎞️","📺","📖","📝","🌙","🤍","📵","🛌","😴","☕","📞","👭","🎨","🧠","⚡","🐟","🩸","🛒","🧾","💅"];
 
 /* ---------- حال (مثل Daylio) ---------- */
-const MOODS=[null,["خیلی بد","--m1","😫"],["بد","--m2","🙁"],["معمولی","--m3","😐"],["خوب","--m4","🙂"],["عالی","--m5","😄"]];
+const MOODS=[null,["خیلی بد","--m1","😣"],["بد","--m2","🙁"],["معمولی","--m3","😐"],["خوب","--m4","😊"],["عالی","--m5","😁"]];
 /* ---------- کیفیت خواب ---------- */
-const SLEEPQ=[null,["خیلی بد","😫"],["بد","🥱"],["معمولی","😐"],["خوب","😌"],["عالی","🤩"]];
+const SLEEPQ=[null,["خیلی بد","😫"],["بد","🥱"],["معمولی","😪"],["خوب","😌"],["عالی","😴"]];
 const SFACT=[["deep","😌 عمیق و بی‌وقفه"],["dream","🌈 خواب خوب دیدم"],["wakeup","🌙 چند بار بیدار شدم"],["latesleep","⏰ دیر خوابم برد"],["phone","📱 گوشی قبل از خواب"],["caffeine","☕ چای یا قهوه‌ی دیروقت"],["latefood","🍽️ شام دیروقت"],["worry","😟 فکر و نگرانی"],["nightmare","💭 خواب آشفته"],["noise","🔊 سروصدا یا نور"],["pain","🤒 درد یا ناخوشی"]];
 const SFACT_POS=new Set(["deep","dream"]);
 const NEG=[["procrast","😶‍🌫️ اهمال‌کاری"],["insta","📱 اینستاگرام زیاد"],["game","🎮 بازی زیاد (تراول تاون)"],["junk","🍟 فست‌فود یا شیرینی زیاد"]];
@@ -287,8 +289,15 @@ const faT=t=>t.replace(/\d/g,d=>'۰۱۲۳۴۵۶۷۸۹'[d]);
 const wdOf=k=>(dateOf(k).getDay()+1)%7;
 const weekStartOf=k=>shift(k,-wdOf(k));
 const dayIdx=k=>{const n=Math.round((dateOf(k)-START)/864e5);return((n%30)+30)%30};
-const MOUTH=[null,'M7.6 17.4Q12 13 16.4 17.4','M8.3 16.6Q12 14.4 15.7 16.6','M8.4 15.6H15.6','M8 14.4Q12 18 16 14.4','M7.2 13.6Q12 20.4 16.8 13.6Z'];
-const svgFace=(m,closed)=>`<svg viewBox="0 0 24 24" width="100%" height="100%" aria-hidden="true"><circle cx="12" cy="12" r="11.2" fill="var(${MOODS[m][1]})"/>${closed?'<path d="M6.8 10.2Q8.5 11.9 10.2 10.2M13.8 10.2Q15.5 11.9 17.2 10.2" stroke="#fff" stroke-width="1.6" fill="none" stroke-linecap="round"/>':`<circle cx="8.6" cy="9.8" r="1.5" fill="#fff"/><circle cx="15.4" cy="9.8" r="1.5" fill="#fff"/>`}<path d="${MOUTH[m]}" stroke="#fff" stroke-width="1.8" fill="${m===5?'#fff':'none'}" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+/* آیکون‌های رنگی Fluent Emoji (Microsoft، مجوز MIT) به‌جای ایموجی‌های گوشی */
+const EJ=["1f305", "1f307", "1f308", "1f319", "1f31f", "1f324", "1f32b", "1f333", "1f33f", "1f34c", "1f34e", "1f35f", "1f36f", "1f372", "1f373", "1f37d", "1f381", "1f389", "1f39e", "1f3a8", "1f3ac", "1f3ae", "1f3af", "1f3c6", "1f3cb", "1f3e0", "1f41f", "1f44c", "1f467", "1f468", "1f469", "1f469-200d-1f373", "1f475", "1f485", "1f48a", "1f499", "1f49a", "1f49b", "1f49c", "1f4a1", "1f4a7", "1f4ad", "1f4bb", "1f4bc", "1f4be", "1f4c5", "1f4c8", "1f4ca", "1f4cb", "1f4cc", "1f4d6", "1f4da", "1f4dd", "1f4de", "1f4f1", "1f4f2", "1f4f4", "1f4f5", "1f4fa", "1f50a", "1f514", "1f515", "1f525", "1f52e", "1f549", "1f5d1", "1f5d3", "1f601", "1f60a", "1f60c", "1f610", "1f615", "1f61f", "1f623", "1f62a", "1f62b", "1f634", "1f636", "1f636-200d-1f32b", "1f641", "1f64f", "1f680", "1f6b6", "1f6b6-200d-2640", "1f6bf", "1f6cc", "1f6cd", "1f6cf", "1f6d2", "1f6e1", "1f90d", "1f912", "1f955", "1f957", "1f95b", "1f963", "1f964", "1f971", "1f9b7", "1f9ca", "1f9d8", "1f9d8-200d-2640", "1f9e0", "1f9e1", "1f9f4", "1f9f9", "1f9fd", "1f9fe", "1fa78", "1faa3", "1faa5", "21a9", "23f0", "2600", "2615", "2640", "26a0", "26a1", "2705", "270f", "2728", "2764", "2795", "2b06", "2b07", "2b50"];
+const ejHex=e=>[...e].filter(c=>c!=='\uFE0F').map(c=>c.codePointAt(0).toString(16)).join('-');
+const ejSrc=e=>'icons/e/'+ejHex(e)+'.svg';
+const EJRE=new RegExp(EJ.slice().sort((a,b)=>b.length-a.length).map(k=>k.split('-').map(h=>'\\u{'+h+'}\\uFE0F?').join('')).join('|'),'gu');
+const EJSKIP=/^(SCRIPT|STYLE|TEXTAREA|OPTION|SELECT|TITLE|INPUT|text|tspan)$/;
+function emojify(root){if(!root||root.nodeType!==1)return;const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode:n=>{const p=n.parentElement;if(!p||EJSKIP.test(p.tagName)||p.closest('svg,select'))return 2;EJRE.lastIndex=0;return EJRE.test(n.data)?1:2}});const ns=[];while(w.nextNode())ns.push(w.currentNode);
+  ns.forEach(n=>{const f=document.createDocumentFragment(),t=n.data;let i=0;t.replace(EJRE,(m,o)=>{if(o>i)f.append(t.slice(i,o));const im=document.createElement('img');im.className='ej';im.src=ejSrc(m);im.alt=m;im.draggable=false;f.append(im);i=o+m.length;return m});if(i<t.length)f.append(t.slice(i));n.replaceWith(f)})}
+const svgFace=(m,closed)=>`<img class="fi" src="${ejSrc((closed?SLEEPQ[m][1]:MOODS[m][2]))}" alt="" draggable="false">`;
 const face=(m,s)=>`<span class="fe" style="--fc:var(${MOODS[m][1]});width:${s}px;height:${s}px">${svgFace(m)}</span>`;
 const face_emoji=(m,s)=>`<span class="fe" style="--fc:var(${MOODS[m][1]});width:${s}px;height:${s}px;font-size:${Math.round(s*.6)}px" aria-hidden="true">${MOODS[m][2]}</span>`;
 const toMin=t=>{const[a,b]=String(t).split(':').map(Number);return a*60+b};
@@ -316,7 +325,7 @@ function defTpl(){
     A('07:35','🚶‍♀️','۳۰ دقیقه پیاده‌روی','morning','walk','💧 لیوان ۲ قبل از رفتن. هوای آلوده یا خیلی سرد: ۲۰ دقیقه تمرین سبک در خانه.');
     A('08:05','🚿','دوش کوتاه و لباس','care','','لباس بیرون بپوش، حتی اگر در خانه کار می‌کنی.');
     A('08:20','🥣','اوتمیل','food','',ml.o);
-    A('08:25','⚡','ب‌کمپلکس یا زینک','supp','bvit','بعد از صبحانه.');
+    A('08:25','⚡','ب‌کمپلکس','supp','bvit','بعد از صبحانه. یک روز ب‌کمپلکس، یک روز زینک.');
     if(fri){
       A('09:00','🛒','خرید هفتگی + آماده‌سازی غذا','home','chore','برای کل هفته.');
       A('09:45','🧽','نظافت ماهانه: {monthly}','home','','کار ماهانه‌ی همین هفته.');
@@ -335,8 +344,8 @@ function defTpl(){
     A('12:30','🥗',fri?'ناهار: وعده‌ی آزاد هفته':'ناهار','food','',ml.l);
     if([0,2,4,6].includes(w))A('12:35','🐟','کپسول امگا۳','supp','omega','با ناهار (یک روز در میان).');
     if(!wed&&!fri)A('13:00','🧽','جمع کردن آشپزخانه','home','','ظرف‌ها همان موقع.');
-    A('13:15','🧘‍♀️',`تمرین چاکرای ${ch.n} (۲۰ دقیقه)`,'chakra','chakra',`${ch.e} آسانا: ${ch.a}\n\nکارهای امروز: ${ch.d}\nغذای هم‌رنگ: ${ch.f}\n\nهوئوپونوپونو: ${ch.h}\n\nجمله‌ها: ${ch.s}`);
-    A('13:35','😌','استراحت','rest','','💧 لیوان ۵. چرت حداکثر ۲۰ دقیقه. اینستاگرام و بازی فقط همین زمان.');
+    A('14:05','🧘‍♀️',`تمرین چاکرای ${ch.n} (۲۰ دقیقه)`,'chakra','chakra',`${ch.e} آسانا: ${ch.a}\n\nکارهای امروز: ${ch.d}\nغذای هم‌رنگ: ${ch.f}\n\nهوئوپونوپونو: ${ch.h}\n\nجمله‌ها: ${ch.s}`);
+    A('13:15','😌','استراحت و هضم غذا','rest','','💧 لیوان ۵. چرت حداکثر ۲۰ دقیقه. اینستاگرام و بازی فقط همین زمان.');
     if(!fri)A('14:30','🎁',wed?'کادوپیا (اگر شد)':'کادوپیا (۳ ساعت)','work','kadopia','۳ بلوک ۵۰/۱۰. قبل از هر بلوک یک خروجی مشخص بنویس. 💧 لیوان ۶');
     if(gym)A('16:30','🍌','وعده‌ی قبل از باشگاه','food','',ml.a+' · 💧 لیوان ۷');
     else A(fri?'15:45':'16:00','🥛','عصرانه: شیر و میوه','food','milk',ml.a+' · 💧 لیوان ۷');
@@ -366,7 +375,7 @@ function defTpl(){
   }
   return{v:TPL_VER,days};
 }
-const TPL_VER=2;
+const TPL_VER=3;
 
 let docs=new Map(),db=null,uid=null,view='today',cur=today(),wkOff=0,calOff=0,editR=false,sheet=null,timers={},chains={},installEvt=null;
 const tpl=()=>docs.get('tpl')||defTpl();
@@ -374,7 +383,9 @@ const routines=()=>(docs.get('routines')?.cats)||DEF_ROUT;
 const settings=()=>docs.get('settings')||{custom:[]};
 const dayDoc=k=>{const d=docs.get('d-'+k)||{},s=d.sleep||{};return{intent:d.intent||'',tasks:[0,1,2].map(i=>({t:d.tasks?.[i]?.t||'',d:!!d.tasks?.[i]?.d})),water:d.water||0,grat:[0,1,2].map(i=>d.grat?.[i]||''),good:d.good||'',learn:d.learn||'',tomorrow:d.tomorrow||'',note:d.note||'',habits:{...(d.habits||{})},done:{...(d.done||{})},plan:d.plan?JSON.parse(JSON.stringify(d.plan)):null,sleep:{bed:s.bed||'',wake:s.wake||'',q:s.q||0,f:[...(s.f||[])]}}};
 const hasSleep=s=>!!(s.q||s.bed||s.wake||s.f.length);
-const planFor=k=>(dayDoc(k).plan||tpl().days[wdOf(k)]||[]).slice().sort((a,b)=>a.t<b.t?-1:1);
+const SUPP_ALT=[{h:'bvit',e:'⚡',l:'ب‌کمپلکس'},{h:'zinc',e:'🛡️',l:'زینک'}];
+const altSupp=(x,k)=>x.h==='bvit'||x.h==='zinc'?{...x,...SUPP_ALT[Math.round(dateOf(k)/864e5)&1]}:x;
+const planFor=k=>(dayDoc(k).plan||tpl().days[wdOf(k)]||[]).map(x=>altSupp(x,k)).sort((a,b)=>a.t<b.t?-1:1);
 const fill=(l,k)=>l.replace('{doc}',()=>{const w=Math.floor((dateOf(k)-WEEK0)/6048e5);return DOCS[w]||'یک مستند به انتخاب خودت'}).replace('{chore}',CHORE[wdOf(k)]).replace('{monthly}',()=>MONTHLY[Math.min(3,Math.floor((pparts(dateOf(k)).day-1)/7))]);
 const entries=()=>[...docs].filter(([id])=>id.startsWith('en-')).map(([id,v])=>({id,...v})).sort((a,b)=>b.ts-a.ts);
 const kOf=ts=>keyOf(new Date(ts));
@@ -406,7 +417,7 @@ let ciOpen=null; /* null = خودکار */
 const ciDone=(k,d)=>!!(docs.get(amId(k))&&d.sleep.bed&&d.sleep.wake);
 function checkinCard(k,d){
   const s=d.sleep,dur=sleepDur(s),am=docs.get(amId(k)),isT=k===today();
-  if(ciDone(k,d)&&ciOpen!==k)return`<button class="card mini" id="ciOpen" aria-label="ویرایش خواب و حال صبح"><span class="mi">${s.q?`<span class="fe" style="width:26px;height:26px">${svgFace(s.q,true)}</span>`:'😴'} <b>${durTxt(dur)}</b></span><span class="mi">${face(am.mood,26)} <b>${MOODS[am.mood][0]}</b></span><span class="ed">✏️</span></button>`;
+  if(ciDone(k,d)&&ciOpen!==k)return`<button class="card mini" id="ciOpen" aria-label="ویرایش خواب و حال صبح"><span class="mi">${s.q?`<span class="fe" style="--fc:var(${MOODS[s.q][1]});width:26px;height:26px">${svgFace(s.q,true)}</span>`:'😴'} <b>${durTxt(dur)}</b></span><span class="mi">${face(am.mood,26)} <b>${MOODS[am.mood][0]}</b></span><span class="ed">✏️</span></button>`;
   const sq=[5,4,3,2,1].map(n=>`<button class="mood ${s.q===n?'on':''}" data-sq="${n}" aria-pressed="${s.q===n}" style="--fc:var(${MOODS[n][1]})"><span class="fe" style="--fc:var(${MOODS[n][1]})">${svgFace(n,true)}</span>${SLEEPQ[n][0]}</button>`).join('');
   const mood=[5,4,3,2,1].map(n=>`<button class="mood ${am?.mood===n?'on':''}" data-am="${n}" aria-pressed="${am?.mood===n}">${face(n,54)}${MOODS[n][0]}</button>`).join('');
   const durNote=dur?`<div class="dur">🛌 <b>${durTxt(dur)}</b> ${dur<360?'😕':dur>=420&&dur<=540?'👌':''}</div>`:'';
@@ -758,7 +769,7 @@ function statsView(){
    <p class="note">آخرین پشتیبان: ${(()=>{const b=settings().lastBackup;return b?new Date(b).toLocaleDateString('fa-IR-u-ca-persian',{day:'numeric',month:'long'}):'هنوز نگرفته‌ای'})()}</p></div>`;
   if(chartRO)chartRO.disconnect();const box=$('chart');if(!box)return;const svg=box.querySelector('svg');
   const draw=()=>{const W=box.clientWidth,H=box.clientHeight,pl=8,pr=34,pt=10,pb=24,x=i=>W-pr-(i/(ks.length-1))*(W-pl-pr),yy=v=>pt+(5-v)/4*(H-pt-pb);
-    let g='';for(let v=1;v<=5;v++)g+=`<line x1="${pl}" x2="${W-pr}" y1="${yy(v)}" y2="${yy(v)}" stroke="var(--line)"/><svg x="${W-pr+7}" y="${yy(v)-9}" width="18" height="18" viewBox="0 0 24 24">${svgFace(v).replace(/^<svg[^>]*>|<\/svg>$/g,'')}</svg>`;
+    let g='';for(let v=1;v<=5;v++)g+=`<line x1="${pl}" x2="${W-pr}" y1="${yy(v)}" y2="${yy(v)}" stroke="var(--line)"/><image href="${ejSrc(MOODS[v][2])}" x="${W-pr+7}" y="${yy(v)-9}" width="18" height="18"/>`;
     const pts=ks.map((k,i)=>dm.has(k)?[x(i),yy(dm.get(k)),dm.get(k)]:null).filter(Boolean);
     g+=`<polyline points="${pts.map(p=>p[0]+','+p[1]).join(' ')}" fill="none" stroke="var(--ink)" stroke-width="2" stroke-linejoin="round"/>`+pts.map(p=>`<circle cx="${p[0]}" cy="${p[1]}" r="4.5" fill="var(${MOODS[Math.round(p[2])][1]})" stroke="var(--card)" stroke-width="2"/>`).join('');
     [[0,-22],[14,0],[29,24]].forEach(([i,dx])=>g+=`<text x="${x(i)+dx}" y="${H-6}" font-size="12" fill="var(--soft)" text-anchor="middle">${fmt(ks[i],{day:'numeric',month:'short'})}</text>`);svg.innerHTML=g};
@@ -798,6 +809,8 @@ if(location.hash==='#s')history.replaceState(null,'',location.pathname+location.
   const t=today(),T=defTpl();[...docs.keys()].filter(id=>id.startsWith('d-')&&id.slice(2)>=t).forEach(id=>{const k=id.slice(2),d=docs.get(id);if(d&&d.plan){const keep=d.plan.filter(x=>x.b||String(x.id).startsWith('u'));const o={...d,plan:T.days[wdOf(k)].map(x=>({...x})).concat(keep)};put(id,o)}});
   put('settings',{...(docs.get('settings')||{custom:[]}),tplVer:TPL_VER});})();
 show('today');
+emojify(document.body);
+new MutationObserver(ms=>ms.forEach(m=>{if(m.type==='characterData')emojify(m.target.parentElement);else m.addedNodes.forEach(n=>emojify(n.nodeType===3?n.parentElement:n))})).observe(document.body,{childList:true,subtree:true,characterData:true});
 if(new URLSearchParams(location.search).has('add')){history.replaceState(null,'',location.pathname);openMood(null)}
 /* وقتی اپ بعد از چند ساعت دوباره باز می‌شود، «امروز» را به‌روز کن */
 let lastDay=today();document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&NATIVE&&view==='stats'&&!sheet)rerender();if(document.visibilityState==='visible'&&today()!==lastDay){if(cur===lastDay)cur=today();lastDay=today();if(!sheet)refresh()}});
