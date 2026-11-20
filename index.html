@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>ژورنال روزانه مونا</title>
+<meta name="description" content="ژورنال روزانه: حال، خواب، برنامه و عادت‌ها">
+<meta name="theme-color" content="#f4f5fa" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0e111b" media="(prefers-color-scheme: dark)">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="ژورنال مونا">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<style>
+@font-face{font-family:Vazirmatn;font-style:normal;font-display:swap;font-weight:100 900;src:url(fonts/vazirmatn-arabic-wght-normal.woff2) format("woff2-variations");unicode-range:U+0600-06FF,U+0750-077F,U+0870-088E,U+0890-0891,U+0897-08E1,U+08E3-08FF,U+200C-200E,U+2010-2011,U+204F,U+2E41,U+FB50-FDFF,U+FE70-FE74,U+FE76-FEFC,U+102E0-102FB,U+10E60-10E7E,U+10EC2-10EC4,U+10EFC-10EFF,U+1EE00-1EEFF}
+@font-face{font-family:Vazirmatn;font-style:normal;font-display:swap;font-weight:100 900;src:url(fonts/vazirmatn-latin-wght-normal.woff2) format("woff2-variations");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+:root{color-scheme:light dark;
+--bg:#f4f5fa;--card:#fff;--ink:#1c2440;--soft:#626a88;--line:#e4e7f0;--chip:#eff1f7;--sel:#1c2440;--selInk:#fff;
+--m5:#22b07d;--m4:#7fb832;--m3:#3d9be0;--m2:#f29b38;--m1:#e5484d}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0e111b;--card:#181c2b;--ink:#e8ebf7;--soft:#a2a9c4;--line:#272c40;--chip:#22273a;--sel:#e8ebf7;--selInk:#121522}}
+:root[data-theme=dark]{--bg:#0e111b;--card:#181c2b;--ink:#e8ebf7;--soft:#a2a9c4;--line:#272c40;--chip:#22273a;--sel:#e8ebf7;--selInk:#121522}
+*{box-sizing:border-box;min-width:0;-webkit-tap-highlight-color:transparent}
+html{background:var(--bg)}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 Vazirmatn,Tahoma,sans-serif;overflow-x:clip;padding-bottom:calc(100px + env(safe-area-inset-bottom))}
+button,input,textarea,select{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--m3);outline-offset:2px;border-radius:8px}
+.wrap{max-width:680px;margin:0 auto;padding:calc(14px + env(safe-area-inset-top)) 16px 14px}
+h1{font-size:clamp(24px,5vw,30px);line-height:1.15;margin:4px 0 12px;font-weight:800}
+h2{font-size:17px;margin:0 0 10px;font-weight:800;display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+h2 small{font-size:13px;color:var(--soft);font-weight:500}
+.card{background:var(--card);border-radius:18px;padding:16px;margin-bottom:12px}
+.quote{font-weight:700;font-size:17px;line-height:1.6;margin:0;text-wrap:balance}
+.quote small{display:block;color:var(--soft);font-weight:400;font-size:13px}
+.lab{color:var(--soft);font-size:13px;margin:12px 0 4px}
+.q{font-weight:800;font-size:15px;margin:14px 0 6px;color:var(--ink)}
+.q:first-of-type{margin-top:4px}
+.field{width:100%;border:1px solid var(--line);background:transparent;border-radius:12px;padding:8px 12px;font-size:16px;min-height:44px}
+textarea.field{resize:vertical;min-height:72px}
+.task{display:flex;gap:8px;align-items:center;margin-top:6px}
+.task input[type=checkbox]{width:24px;height:24px;accent-color:var(--m5);flex:none;margin:0}
+.task.done .field{text-decoration:line-through;color:var(--soft)}
+.cups{display:flex;gap:6px;flex-wrap:wrap}
+.cup{width:34px;height:42px;border:2px solid #0ea5e9;border-radius:4px 4px 11px 11px;background:none;position:relative;overflow:hidden;padding:0}
+.cup::after{content:"";position:absolute;inset:auto 0 0;height:0;background:#0ea5e9;opacity:.8;transition:height .25s}
+.cup.on::after{height:80%}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+.daynav{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px}
+.daynav .c{text-align:center}.daynav b{display:block;font-size:20px;line-height:1.3}.daynav small{color:var(--soft);font-size:13px}
+.rnd{width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--card);font-size:20px;flex:none}
+.rnd:disabled{opacity:.35}
+.prog{display:flex;align-items:center;gap:12px}
+.prog .bar{flex:1;height:12px;background:var(--chip);border-radius:9px;overflow:hidden}
+.prog .bar span{display:block;height:100%;background:linear-gradient(90deg,#22b07d,#8cc63f);border-radius:9px;transition:width .3s}
+.prog b{font-size:20px;white-space:nowrap}
+.tl{list-style:none;margin:0;padding:0}
+.it{display:grid;grid-template-columns:52px 30px minmax(0,1fr) 30px;gap:8px;align-items:center;padding:9px 10px;border-radius:14px;margin-bottom:6px;background:color-mix(in srgb,var(--c) 9%,var(--card));border-inline-start:4px solid var(--c)}
+.it .tm{font-weight:800;font-size:14px;white-space:nowrap;color:var(--c)}
+.it .em{font-size:22px;line-height:1;text-align:center}
+.it .lb{border:0;background:none;text-align:start;padding:2px 0;font-size:15px;line-height:1.45}
+.it .lb small{display:block;color:var(--soft);font-size:12px}
+.it.done .lb{text-decoration:line-through;color:var(--soft)}
+.it.now{box-shadow:0 0 0 2px var(--c)}
+.ck{width:30px;height:30px;border-radius:50%;border:2px solid var(--c);background:none;display:grid;place-items:center;color:#fff;font-size:16px;padding:0}
+.ck.on{background:var(--c)}
+.addrow{width:100%;border:2px dashed var(--line);background:none;border-radius:14px;min-height:46px;color:var(--soft);margin-top:4px}
+.cat{margin-top:14px}.cat:first-of-type{margin-top:0}
+.cat h3{font-size:15px;margin:0 0 8px;display:flex;align-items:center;gap:6px;color:var(--c)}
+.cat h3 small{color:var(--soft);font-weight:500;font-size:12px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.hab{border:1.5px solid color-mix(in srgb,var(--c) 45%,transparent);background:var(--card);border-radius:999px;padding:6px 12px;min-height:40px;font-size:14px;display:flex;align-items:center;gap:6px}
+.hab.on{background:var(--c);border-color:var(--c);color:#fff}
+.hab .del{background:#0003;color:#fff;border-radius:50%;width:20px;height:20px;display:grid;place-items:center;font-size:12px}
+.inline{display:flex;gap:6px;margin-top:8px}.inline .field{flex:1}
+.btn{border:1px solid var(--line);background:var(--card);border-radius:12px;padding:0 14px;min-height:44px}
+.btn.sm{min-height:36px;font-size:14px}
+.btn.full{width:100%}
+.day{margin:18px 0 8px;font-weight:800;font-size:15px;color:var(--soft)}
+.entry{display:grid;grid-template-columns:52px minmax(0,1fr);gap:12px;background:var(--card);border-radius:16px;padding:14px;margin-bottom:8px;border:0;width:100%;text-align:start}
+.entry .mt{font-weight:800}.entry .mt span{color:var(--soft);font-weight:400;font-size:13px;margin-inline-start:6px}
+.tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
+.tag{font-size:12px;background:var(--chip);border-radius:999px;padding:2px 9px}
+.note{margin:6px 0 0;font-size:14px;color:var(--soft);white-space:pre-wrap}
+.empty{text-align:center;color:var(--soft);padding:24px 12px}
+nav{position:fixed;inset:auto 0 0;background:var(--card);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(5,minmax(0,1fr));align-items:center;padding:6px 6px calc(6px + env(safe-area-inset-bottom));z-index:5}
+nav button{border:0;background:none;padding:4px 2px;font-size:12px;color:var(--soft);min-height:52px;border-radius:12px;display:grid;justify-items:center;line-height:1.3}
+nav button span{font-size:20px}
+nav button[aria-pressed=true]{color:var(--ink);font-weight:800;background:var(--chip)}
+nav .add{width:56px;height:56px;border-radius:50%;background:var(--sel);color:var(--selInk);font-size:30px;line-height:1;justify-self:center;margin-top:-26px;box-shadow:0 6px 18px -6px #1c244088;min-height:0;display:block}
+.sheet{position:fixed;inset:0;background:var(--bg);z-index:10;overflow-y:auto;overscroll-behavior:contain}
+.sheet .wrap{padding-bottom:120px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.x{border:0;background:var(--chip);width:44px;height:44px;border-radius:50%;font-size:20px;flex:none}
+/* emoji faces */
+.fe{display:grid;place-items:center;border-radius:50%;background:color-mix(in srgb,var(--fc) 22%,var(--card));line-height:1;flex:none;font-family:"Noto Color Emoji","Apple Color Emoji","Segoe UI Emoji",sans-serif}
+.moods{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:4px;margin:6px 0 4px}
+.mood{border:0;background:none;display:grid;justify-items:center;gap:4px;padding:6px 0;border-radius:14px;font-size:13px;color:var(--soft)}
+.mood .fe{width:min(54px,14vw);height:min(54px,14vw);font-size:min(32px,8.4vw);filter:grayscale(.55);opacity:.7;transition:transform .15s,filter .15s,opacity .15s}
+.mood.on .fe{filter:none;opacity:1;transform:scale(1.14);box-shadow:0 0 0 3px var(--fc)}
+.mood.on{font-weight:800;color:var(--ink)}
+.moods.picked .mood:not(.on) .fe{opacity:.45}
+.grp{margin-top:14px}.grp h3{font-size:14px;margin:0 0 6px;color:var(--soft);font-weight:700}
+.acts{display:flex;flex-wrap:wrap;gap:6px}
+.act{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:7px 13px;min-height:40px;font-size:14px}
+.act.on{background:var(--sel);color:var(--selInk);border-color:var(--sel)}
+.act.neg.on{background:var(--m1);border-color:var(--m1);color:#fff}
+.act.pos.on{background:var(--m5);border-color:var(--m5);color:#fff}
+.save{position:fixed;inset:auto 0 0;padding:12px 16px calc(12px + env(safe-area-inset-bottom));background:linear-gradient(transparent,var(--bg) 30%);z-index:11}
+.save div{max-width:680px;margin:0 auto;display:flex;gap:8px}
+.pri{flex:1;border:0;background:var(--sel);color:var(--selInk);border-radius:14px;min-height:52px;font-weight:800}
+.pri:disabled{opacity:.4}
+.delb{border:1px solid var(--m1);color:var(--m1);background:none;border-radius:14px;padding:0 16px;min-height:52px}
+.emo{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}.emo button{border:0;background:var(--chip);border-radius:10px;width:40px;height:40px;font-size:20px}
+.seg{display:flex;gap:6px;flex-wrap:wrap}.seg label{flex:1;min-width:130px;border:1px solid var(--line);border-radius:12px;padding:10px;display:flex;gap:8px;align-items:center;font-size:14px;background:var(--card)}
+.colors{display:flex;flex-wrap:wrap;gap:6px}.colors button{border:2px solid transparent;border-radius:999px;padding:6px 12px;font-size:13px;color:#fff;min-height:38px}
+.colors button.on{border-color:var(--ink);box-shadow:0 0 0 2px var(--card) inset}
+/* check-in (sleep + morning mood) */
+.checkin{border-top:4px solid #f59e0b}
+.checkin hr{border:0;border-top:1px dashed var(--line);margin:16px 0 4px}
+.times{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:8px}
+.times label{display:grid;gap:4px;font-size:13px;color:var(--soft)}
+.times input{text-align:center;font-weight:700;color:var(--ink)}
+.dur{display:flex;align-items:center;gap:8px;margin-top:8px;padding:8px 12px;border-radius:12px;background:var(--chip);font-size:14px}
+.dur b{font-size:16px}
+.done-line{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:8px;font-size:14px;color:var(--soft)}
+.install{display:flex;align-items:center;gap:10px;border:1px solid var(--line)}
+.install p{flex:1;margin:0;font-size:14px}
+/* habit grid */
+.grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr)) 44px;gap:4px;align-items:center;font-size:13px}
+.grid .h{color:var(--soft);text-align:center;font-size:12px;line-height:1.2}
+.grid .h.t{color:var(--ink);font-weight:800}
+.grid .n{grid-column:1/-1;font-size:14px;margin-top:6px}
+.grid .g{grid-column:1/-1;font-weight:800;color:var(--c);margin-top:10px;font-size:14px}
+.cell{width:28px;height:28px;border-radius:50%;border:1.5px solid color-mix(in srgb,var(--c) 40%,transparent);background:none;padding:0;justify-self:center;color:#fff;font-size:13px}
+.cell.on{background:var(--c);border-color:var(--c)}
+.cell:disabled{opacity:.3}
+.cnt{text-align:left;font-weight:700;white-space:nowrap;font-size:13px}
+.cnt.ok{color:var(--m5)}
+/* stats */
+.cal{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;text-align:center}
+.cal .wd{font-size:12px;color:var(--soft)}
+.cal button{aspect-ratio:1;border:0;border-radius:50%;background:var(--chip);font-size:14px;padding:0;display:grid;place-items:center}
+.cal button.t{box-shadow:inset 0 0 0 2px var(--ink)}
+.cal button:disabled{opacity:.35}
+.mhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.mhead b{font-size:17px}
+.legend{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px;font-size:13px;color:var(--soft)}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:50%;margin-inline-end:4px;vertical-align:-1px}
+.fig{position:relative;height:200px}.fig svg{position:absolute;inset:0;width:100%;height:100%}
+.hrow{display:grid;grid-template-columns:minmax(0,9em) minmax(0,1fr) 3.2em;gap:8px;align-items:center;font-size:14px;margin:6px 0}
+.hbar{height:10px;background:var(--chip);border-radius:9px;overflow:hidden}.hbar span{display:block;height:100%;border-radius:9px}
+.hrow b{text-align:left;font-weight:700;white-space:nowrap}
+.big{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-bottom:12px}
+.big div{background:var(--card);border-radius:16px;padding:12px;text-align:center}
+.card .big div{background:var(--chip)}
+.big b{display:block;font-size:clamp(18px,5vw,24px);line-height:1.25}.big small{color:var(--soft);font-size:12px}
+.sbars{display:grid;grid-template-columns:repeat(14,minmax(0,1fr));gap:4px;align-items:end;margin-top:22px;position:relative}
+.sbars .col{display:grid;grid-template-rows:120px 14px;gap:4px;justify-items:center}
+.sbars .b{width:100%;max-width:22px;align-self:end;border-radius:6px 6px 3px 3px;background:var(--chip)}
+.sbars small{font-size:10px;color:var(--soft);line-height:1}
+.sbars .goal{position:absolute;inset-inline:0;border-top:1.5px dashed var(--soft);opacity:.6}
+.sbars .goal span{position:absolute;inset-inline-start:0;top:-16px;font-size:10px;color:var(--soft)}
+.insight{background:var(--chip);border-radius:12px;padding:10px 12px;font-size:14px;margin-top:10px}
+.toast{position:fixed;bottom:calc(100px + env(safe-area-inset-bottom));inset-inline:0;margin:auto;width:max-content;max-width:90vw;background:var(--sel);color:var(--selInk);padding:8px 16px;border-radius:999px;font-size:14px;z-index:20;opacity:0;transition:opacity .2s;pointer-events:none;text-align:center}
+.toast.on{opacity:1}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <section id="v-today"></section>
+  <section id="v-feed" hidden></section>
+  <section id="v-habits" hidden></section>
+  <section id="v-stats" hidden></section>
+</div>
+<nav>
+  <button data-v="today" aria-pressed="true"><span>📅</span>امروز</button>
+  <button data-v="feed" aria-pressed="false"><span>📖</span>دفتر</button>
+  <button class="add" id="add" aria-label="ثبت حال الان">+</button>
+  <button data-v="habits" aria-pressed="false"><span>✅</span>عادت‌ها</button>
+  <button data-v="stats" aria-pressed="false"><span>📊</span>آمار</button>
+</nav>
+<div class="sheet" id="sheet" hidden></div>
+<div class="toast" id="toast" role="status"></div>
+<input type="file" id="restoreFile" accept="application/json,.json" hidden>
+
+<script>
+{
+/* ---------- جمله‌های روز (۳۰ روزه، چرخشی) ---------- */
+const AM=["امروز یک روز تازه است و من آماده‌ی شروعش هستم.","به قول‌هایی که به خودم می‌دهم عمل می‌کنم.","هر قدم کوچک امروز، من را به هدفم نزدیک‌تر می‌کند.","برای کارهای مهمم انرژی و تمرکز کافی دارم.","کادوپیا با هر ساعتی که برایش کار می‌کنم بزرگ‌تر می‌شود.","من لایق یک زندگی آرام، منظم و پربرکت هستم.","امروز اول سراغ سخت‌ترین کار می‌روم.","بدنم را دوست دارم و از آن مراقبت می‌کنم.","فقط کافی است شروع کنم؛ ادامه‌اش خودش می‌آید.","ذهنم روشن و آرام است.","امروز فرصت‌های خوب را می‌بینم و از آن‌ها استفاده می‌کنم.","از دیروزم بهترم و همین کافی است.","انضباط یعنی مهربانی با خودِ آینده‌ام.","کنترل وقتم دست خودم است، نه دست گوشی‌ام.","هر کاری را با تمام حواسم انجام می‌دهم.","من آدم توانمند و خلاقی هستم.","امروز کاری می‌کنم که شب به خودم افتخار کنم.","اشتباه بخشی از رشد است؛ از آن یاد می‌گیرم.","کار باکیفیت، فرصت‌های خوب را به سمتم می‌آورد.","مسئول حال خوبم خودم هستم.","امروز سه کار مهمم را تمام می‌کنم.","با آرامش و اعتمادبه‌نفس با چالش‌ها روبه‌رو می‌شوم.","خانه‌ی مرتب، ذهن مرتب.","به مسیرم ایمان دارم، حتی وقتی آهسته پیش می‌رود.","امروز با انرژی مثبتم روی اطرافیانم اثر می‌گذارم.","من عادت‌هایم را می‌سازم و عادت‌هایم آینده‌ام را.","هر صبح که زود بیدار می‌شوم، یک برد کوچک برای من است.","برای رویاهایم وقت می‌گذارم.","امروز را هدر نمی‌دهم؛ امروز مال من است.","همین حالا دارم به بهترین نسخه‌ی خودم تبدیل می‌شوم."];
+const PM=["امروز هر کاری از دستم برمی‌آمد انجام دادم؛ کافی است.","برای همه‌ی لحظه‌های خوب امروز شکرگزارم.","فردا روز تازه‌ای است با فرصت‌های تازه.","ذهنم را رها می‌کنم و به بدنم اجازه‌ی استراحت می‌دهم.","در امنیت و آرامش هستم.","کارهای نیمه‌تمام فردا هم منتظرم می‌مانند؛ الان وقت استراحت است.","از بدنم ممنونم که امروز همراهم بود.","هر نفس عمیق، آرام‌ترم می‌کند.","خواب خوب امشب، انرژی فردای من است.","خودم را برای اشتباه‌های امروز می‌بخشم.","برای خانه‌ام، غذایم و آدم‌هایی که دوستشان دارم شکرگزارم.","فردا با انرژی بیدار می‌شوم.","امروز یک قدم جلو رفتم، حتی اگر کوچک بود.","نگرانی‌ها را روی کاغذ می‌گذارم و سبک می‌خوابم.","لایق آرامش و استراحت هستم.","چیزهای خوب در راه‌اند.","امشب با خودم مهربانم.","همه‌چیز در زمان درستش اتفاق می‌افتد.","برای یک چیز کوچک امروز لبخند می‌زنم.","ذهنم مثل آبی آرام، ساکت می‌شود.","فردا نسخه‌ی بهتری از امروز خواهد بود.","به خودم و مسیرم اعتماد دارم.","شکرگزارم که امروز سالم و توانا بودم.","هر چیزی را که امروز سنگین بود زمین می‌گذارم.","خواب عمیق و آرام منتظرم است.","فردا صبح یک شروع تازه به من هدیه می‌شود.","امروز از زندگی چیزی یاد گرفتم.","قلبم آرام است و ذهنم روشن.","برای امید و رویاهایم شکرگزارم.","شب بخیر مونا؛ امروز خوب بودی."];
+
+/* ---------- دسته‌ها و روتین‌ها ---------- */
+const CAT={morning:["صبح","#f59e0b"],supp:["مکمل‌ها","#8b5cf6"],food:["تغذیه","#0ea5e9"],care:["مراقبت از خود","#ec4899"],work:["کار","#4f46e5"],home:["خانه","#14b8a6"],sport:["ورزش","#16a34a"],fun:["تفریح","#f97316"],rest:["استراحت","#a8a29e"],night:["شب","#64748b"]};
+const DEF_ROUT=[
+ ["morning","🌅",[["wake","☀️","بیداری ساعت ۰۶:۳۰"],["nophone","📵","نیم ساعت اول بدون گوشی"],["bed","🛏️","مرتب کردن تخت"],["face","🧊","شستن صورت با آب سرد"],["ginger","🍯","زنجبیل و عسل ناشتا"],["mind","🧘‍♀️","نیت و شکرگزاری"],["walk","🚶‍♀️","۳۰ دقیقه پیاده‌روی"]]],
+ ["supp","💊",[["iron","🩸","قرص آهن"],["bvit","⚡","ب‌کمپلکس"],["omega","🐟","امگا۳"],["mag","🌙","منیزیم"]]],
+ ["food","🥗",[["water8","💧","۸ لیوان آب"],["breakfast","🍳","صبحانه"],["fruit","🍎","میوه و سبزی"],["cook","🍲","آشپزی ناهار"],["healthy","🥦","غذای سالم، بدون فست‌فود"]]],
+ ["care","🧴",[["skinAM","🧴","روتین پوست صبح"],["skinPM","✨","روتین پوست شب"],["teeth","🪥","مسواک صبح و شب"],["floss","🦷","نخ دندان"],["shower","🚿","دوش"]]],
+ ["work","💼",[["freelance","💻","۳ ساعت فریلنس"],["kadopia","🎁","۳ ساعت کادوپیا"],["tasks3","🎯","انجام ۳ کار مهم"],["focus","🧠","کار عمیق بدون گوشی"]]],
+ ["home","🏠",[["tidy","🧹","مرتب کردن روزانه‌ی خانه"],["chore","🧽","کار خانه‌ی امروز"]]],
+ ["night","🌙",[["plan3","📝","نوشتن ۳ کار مهم فردا"],["screenoff","📴","بدون صفحه‌نمایش از ۲۲:۱۵"],["sleep23","😴","خواب ساعت ۲۳"]]]];
+const WEEKLY=[["gym","🏋️‍♀️","باشگاه",3,"sport"],["fun","🎉","تفریح بیرون",2,"fun"],["movie","🎬","فیلم یا سریال",2,"fun"],["doc","🎞️","مستند",1,"fun"],["youtube","📺","یوتیوب",2,"fun"]];
+/* موارد خودکار: توضیح اینکه از کجا تیک می‌خورند */
+const AUTO={water8:"با پر شدن ۸ لیوان آب",tasks3:"با تیک خوردن هر ۳ کار مهم",wake:"از ساعت بیداری که در «دیشب چطور خوابیدی؟» ثبت می‌کنی",sleep23:"از ساعت خوابی که فردا صبح ثبت می‌کنی"};
+const HARD=new Set(["water8","tasks3"]); /* فقط خودکار؛ دستی تیک نمی‌خورند */
+const WEEKDAY_TARGET=new Set(["freelance","kadopia","tasks3","focus","chore"]);
+const DOCS=["The Social Dilemma","Jiro Dreams of Sushi","My Octopus Teacher","Free Solo"];
+const CHORE=["جاروبرقی کل خانه","شستن سرویس بهداشتی و حمام","لباس‌شویی","گردگیری و تمیز کردن سطوح","مرتب کردن یخچال و نوشتن لیست خرید","عوض کردن ملحفه و حوله","خرید هفتگی و آماده کردن غذا"];
+const WD=["شنبه","یکشنبه","دوشنبه","سه‌شنبه","چهارشنبه","پنج‌شنبه","جمعه"];
+const EMOJIS=["☀️","🛏️","🧊","🍯","🪥","💊","🧘‍♀️","✨","🧴","🚶‍♀️","🚿","🍳","🧹","💻","🍲","🥗","😌","🎁","🍎","🏋️‍♀️","🎉","🛍️","🍽️","🎬","🎞️","📺","📖","📝","🌙","🤍","📵","🛌","😴","☕","📞","👭","🎨","🧠","⚡","🐟","🩸","🛒","🧾","💅"];
+
+/* ---------- حال (مثل Daylio) ---------- */
+const MOODS=[null,["خیلی بد","--m1","😫"],["بد","--m2","🙁"],["معمولی","--m3","😐"],["خوب","--m4","🙂"],["عالی","--m5","😄"]];
+/* ---------- کیفیت خواب ---------- */
+const SLEEPQ=[null,["خیلی بد","😫"],["بد","🥱"],["معمولی","😐"],["خوب","😌"],["عالی","🤩"]];
+const SFACT=[["deep","😌 عمیق و بی‌وقفه"],["dream","🌈 خواب خوب دیدم"],["wakeup","🌙 چند بار بیدار شدم"],["latesleep","⏰ دیر خوابم برد"],["phone","📱 گوشی قبل از خواب"],["caffeine","☕ چای یا قهوه‌ی دیروقت"],["latefood","🍽️ شام دیروقت"],["worry","😟 فکر و نگرانی"],["nightmare","💭 خواب آشفته"],["noise","🔊 سروصدا یا نور"],["pain","🤒 درد یا ناخوشی"]];
+const SFACT_POS=new Set(["deep","dream"]);
+const NEG=[["procrast","😶‍🌫️ اهمال‌کاری"],["insta","📱 اینستاگرام زیاد"],["game","🎮 بازی زیاد (تراول تاون)"],["junk","🍟 فست‌فود یا شیرینی زیاد"]];
+const OTHER=[["friends","👭 دوستان"],["family","👨‍👩‍👧 خانواده"],["book","📖 کتاب"],["shopping","🛍️ خرید"],["nature","🌳 طبیعت"]];
+const DERIVED={sleepgood:"😴 خواب خوب",sleepbad:"🥱 خواب بد",badsleep:"🥱 خواب بد"};
+const NEGSET=new Set(NEG.map(x=>x[0]).concat(["sleepbad","badsleep"]));
+
+const START=new Date(2026,10,20),WEEK0=new Date(2026,10,21);
+const $=id=>document.getElementById(id);
+const fa=n=>Number(n).toLocaleString('fa-IR');
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const keyOf=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+const dateOf=k=>{const[a,b,c]=k.split('-').map(Number);return new Date(a,b-1,c)};
+const today=()=>keyOf(new Date());
+const shift=(k,n)=>{const d=dateOf(k);d.setDate(d.getDate()+n);return keyOf(d)};
+const fmt=(k,o)=>{try{return dateOf(k).toLocaleDateString('fa-IR-u-ca-persian',o)}catch(e){return k}};
+const PF=new Intl.DateTimeFormat('fa-IR-u-ca-persian-nu-latn',{year:'numeric',month:'numeric',day:'numeric'});
+const pparts=d=>{const o={};PF.formatToParts(d).forEach(p=>{if(p.type!=='literal')o[p.type]=+p.value});return o};
+const timeOf=ts=>new Date(ts).toLocaleTimeString('fa-IR',{hour:'2-digit',minute:'2-digit'});
+const faT=t=>t.replace(/\d/g,d=>'۰۱۲۳۴۵۶۷۸۹'[d]);
+const wdOf=k=>(dateOf(k).getDay()+1)%7;
+const weekStartOf=k=>shift(k,-wdOf(k));
+const dayIdx=k=>{const n=Math.round((dateOf(k)-START)/864e5);return((n%30)+30)%30};
+const face=(m,s)=>`<span class="fe" style="--fc:var(${MOODS[m][1]});width:${s}px;height:${s}px;font-size:${Math.round(s*.6)}px" aria-hidden="true">${MOODS[m][2]}</span>`;
+const toMin=t=>{const[a,b]=String(t).split(':').map(Number);return a*60+b};
+const sleepDur=s=>{if(!s||!s.bed||!s.wake)return 0;let d=toMin(s.wake)-toMin(s.bed);if(d<=0)d+=1440;return d};
+const durTxt=m=>{if(!m)return'—';const h=Math.floor(m/60),mm=m%60;return[h?fa(h)+' ساعت':'',mm?fa(mm)+' دقیقه':''].filter(Boolean).join(' و ')};
+const durShort=m=>m?fa((m/60).toFixed(1))+' ساعت':'—';
+const amId=k=>'en-am-'+k;
+
+/* برنامه‌ی پیش‌فرض هفتگی؛ شنبه=۰ … جمعه=۶ */
+function defTpl(){
+  const I=(t,e,l,c,h)=>({id:'i'+t.replace(':','')+(h||''),t,e,l,c,h:h||''});
+  const morning=[I('06:30','☀️','بیدار شدن؛ تا ساعت ۰۷:۰۰ سراغ گوشی نرو','morning','wake'),I('06:32','🛏️','مرتب کردن تخت','morning','bed'),I('06:35','🧊','شستن صورت با آب سرد','morning','face'),I('06:40','🍯','یک لیوان آب ولرم با زنجبیل و عسل (ناشتا)','morning','ginger'),I('06:45','🪥','مسواک و تمیز کردن زبان','care',''),I('06:50','🩸','خوردن قرص آهن','supp','iron'),I('06:52','🧘‍♀️','نوشتن نیت امروز و سه شکرگزاری','morning','mind'),I('07:00','✨','خواندن جمله‌ی امروز و مرور ۳ کار مهم','morning',''),I('07:05','🧴','روتین پوست صبح','care','skinAM'),I('07:15','🚶‍♀️','۳۰ دقیقه پیاده‌روی','morning','walk'),I('07:50','🚿','دوش کوتاه و لباس پوشیدن','care','shower'),I('08:05','🍳','صبحانه','food','breakfast'),I('08:20','⚡','قرص ب‌کمپلکس (بعد از صبحانه)','supp','bvit')];
+  const night=[I('19:30','🍽️','شام سبک با سالاد','food',''),I('21:30','🌙','خوردن منیزیم','supp','mag'),I('21:35','📝','نوشتن ۳ کار مهم فردا','night','plan3'),I('22:00','✨','روتین پوست شب، مسواک و نخ دندان','care','skinPM'),I('22:10','🤍','خواندن جمله‌ی شب و پر کردن «مرور شب»','night',''),I('22:15','📴','گوشی و تلویزیون خاموش؛ وقت کتاب','night','screenoff'),I('22:45','🛌','رفتن به تخت','night',''),I('23:00','😴','خواب','night','sleep23')];
+  const work=[I('08:30','🧹','مرتب کردن خانه و کار امروز: {chore}','home','chore'),I('08:45','💻','فریلنس (۳ ساعت)','work','freelance'),I('11:45','🍲','آشپزی ناهار','food','cook'),I('12:30','🥗','ناهار','food','healthy'),I('12:50','🐟','کپسول امگا۳ (بعد از ناهار)','supp','omega'),I('13:15','😌','استراحت','rest',''),I('14:30','🎁','کار روی کادوپیا (۳ ساعت)','work','kadopia'),I('16:00','🍎','میان‌وعده: میوه','food','fruit')];
+  const eve={gym:I('17:30','🏋️‍♀️','باشگاه','sport','gym'),out:I('17:30','🛍️','کارهای بیرون و خرید','home',''),free:I('17:30','🌿','وقت آزاد','rest',''),fun:I('17:30','🎉','تفریح بیرون','fun','fun'),
+   yt:I('20:30','📺','یوتیوب (۱ ساعت)','fun','youtube'),doc:I('20:30','🎞️','مستند این هفته: {doc}','fun','doc'),mov:I('20:30','🎬','فیلم یا سریال','fun','movie'),book:I('20:30','📖','کتاب یا وقت آزاد','rest','')};
+  const d=(a,b)=>morning.concat(work,[a,b],night).map(x=>({...x}));
+  const fri=morning.concat([I('09:00','🛒','خرید هفتگی و آماده کردن غذا','home','chore'),I('11:00','🧾','مرور هفته (۱۵ دقیقه)','night',''),I('11:30','💅','ناخن و مراقبت هفتگی','care',''),I('12:30','🥗','ناهار','food','healthy'),I('12:50','🐟','کپسول امگا۳ (بعد از ناهار)','supp','omega'),I('13:30','😌','استراحت','rest',''),I('16:00','📺','یوتیوب (۱.۵ ساعت)','fun','youtube'),I('17:30','🎉','تفریح','fun','fun')],night).map(x=>({...x}));
+  return{days:{0:d(eve.gym,eve.book),1:d(eve.out,eve.yt),2:d(eve.gym,eve.doc),3:d(eve.free,eve.mov),4:d(eve.gym,eve.book),5:d(eve.fun,eve.mov),6:fri}};
+}
+
+let docs=new Map(),db=null,uid=null,view='today',cur=today(),wkOff=0,calOff=0,editR=false,sheet=null,timers={},chains={},installEvt=null;
+const tpl=()=>docs.get('tpl')||defTpl();
+const routines=()=>(docs.get('routines')?.cats)||DEF_ROUT;
+const settings=()=>docs.get('settings')||{custom:[]};
+const dayDoc=k=>{const d=docs.get('d-'+k)||{},s=d.sleep||{};return{intent:d.intent||'',tasks:[0,1,2].map(i=>({t:d.tasks?.[i]?.t||'',d:!!d.tasks?.[i]?.d})),water:d.water||0,grat:[0,1,2].map(i=>d.grat?.[i]||''),good:d.good||'',learn:d.learn||'',tomorrow:d.tomorrow||'',note:d.note||'',habits:{...(d.habits||{})},done:{...(d.done||{})},plan:d.plan?JSON.parse(JSON.stringify(d.plan)):null,sleep:{bed:s.bed||'',wake:s.wake||'',q:s.q||0,f:[...(s.f||[])]}}};
+const hasSleep=s=>!!(s.q||s.bed||s.wake||s.f.length);
+const planFor=k=>(dayDoc(k).plan||tpl().days[wdOf(k)]||[]).slice().sort((a,b)=>a.t<b.t?-1:1);
+const fill=(l,k)=>l.replace('{doc}',()=>{const w=Math.floor((dateOf(k)-WEEK0)/6048e5);return DOCS[w]||'یک مستند به انتخاب خودت'}).replace('{chore}',CHORE[wdOf(k)]);
+const entries=()=>[...docs].filter(([id])=>id.startsWith('en-')).map(([id,v])=>({id,...v})).sort((a,b)=>b.ts-a.ts);
+const kOf=ts=>keyOf(new Date(ts));
+function autoOn(d,h,k){
+  if(h==='water8')return d.water>=8;
+  if(h==='tasks3')return d.tasks.every(t=>t.t&&t.d);
+  if(h==='wake'){if(!d.sleep.wake)return false;const m=toMin(d.sleep.wake);return m>=180&&m<=405} /* بین ۰۳:۰۰ و ۰۶:۴۵ */
+  if(h==='sleep23'&&k){const n=dayDoc(shift(k,1)).sleep;if(!n.bed)return false;const m=toMin(n.bed);return m>=1200&&m<=1395} /* بین ۲۰:۰۰ و ۲۳:۱۵ */
+  return false}
+function habitMeta(){const m={};routines().forEach(([c,,items])=>items.forEach(([k,e,l])=>m[k]={e,l,c}));WEEKLY.forEach(([k,e,l,,c])=>m[k]={e,l,c});return m}
+function actsOn(k){const s=new Set(),d=dayDoc(k);Object.keys(d.habits).forEach(h=>d.habits[h]&&s.add(h));Object.keys(AUTO).forEach(h=>autoOn(d,h,k)&&s.add(h));
+  if(d.sleep.q>=4)s.add('sleepgood');else if(d.sleep.q&&d.sleep.q<=2)s.add('sleepbad');
+  entries().forEach(e=>{if(kOf(e.ts)===k)(e.acts||[]).forEach(a=>s.add(a))});return s}
+function dayMood(){const s=new Map();for(const e of entries()){const k=kOf(e.ts);const a=s.get(k)||[0,0];a[0]+=e.mood;a[1]++;s.set(k,a)}const r=new Map();s.forEach((a,k)=>r.set(k,a[0]/a[1]));return r}
+const toast=t=>{const el=$('toast');el.textContent=t;el.classList.add('on');clearTimeout(toast.t);toast.t=setTimeout(()=>el.classList.remove('on'),2200)};
+const LSKEY='daylio-mona';
+function saveLocal(){try{localStorage.setItem(LSKEY,JSON.stringify([...docs]))}catch(e){toast('حافظه‌ی گوشی پر است؛ یک فایل پشتیبان بگیر')}}
+function put(id,data){if(data){data.updated=Date.now();docs.set(id,data)}else docs.delete(id);saveLocal();
+  if(!db)return;const r=db.collection('data/users/'+uid).doc(id);
+  chains[id]=(chains[id]||Promise.resolve()).then(()=>data?r.set(data):r.delete()).catch(e=>toast(e&&e.code==='quota_exceeded'?'فضای ذخیره‌سازی پر شده':'فعلاً فقط روی همین دستگاه ذخیره شد'))}
+function putLater(id,data){data.updated=Date.now();docs.set(id,data);saveLocal();clearTimeout(timers[id]);timers[id]=setTimeout(()=>{delete timers[id];put(id,docs.get(id))},700)}
+const saveDay=(k,d)=>{const o={...d};if(!o.plan)delete o.plan;if(!hasSleep(o.sleep))delete o.sleep;put('d-'+k,o)};
+const saveDayLater=(k,d)=>{const o={...d};if(!o.plan)delete o.plan;if(!hasSleep(o.sleep))delete o.sleep;putLater('d-'+k,o)};
+const autoMsg=h=>toast('این مورد خودکار تیک خورده؛ '+AUTO[h]);
+
+/* ---------- امروز ---------- */
+function greet(k){if(k!==today())return'🌅 شروع این روز';const h=new Date().getHours();return h<5?'🌙 هنوز بیداری مونا؟':h<12?'☀️ صبح بخیر مونا':h<17?'🌤️ روزت بخیر مونا':h<20?'🌇 عصر بخیر مونا':'🌙 شب بخیر مونا'}
+function checkinCard(k,d){
+  const s=d.sleep,dur=sleepDur(s),am=docs.get(amId(k)),isT=k===today();
+  const sq=[5,4,3,2,1].map(n=>`<button class="mood ${s.q===n?'on':''}" data-sq="${n}" aria-pressed="${s.q===n}" style="--fc:var(${MOODS[n][1]})"><span class="fe" style="--fc:var(${MOODS[n][1]})">${SLEEPQ[n][1]}</span>${SLEEPQ[n][0]}</button>`).join('');
+  const mood=[5,4,3,2,1].map(n=>`<button class="mood ${am?.mood===n?'on':''}" data-am="${n}" aria-pressed="${am?.mood===n}">${face(n,54)}${MOODS[n][0]}</button>`).join('');
+  const durNote=dur?`<div class="dur">🛌 <span>مدت خواب:</span> <b>${durTxt(dur)}</b> ${dur<360?'· کمتر از ۶ ساعت 😕':dur>=420&&dur<=540?'· اندازه‌ی خوب 👌':''}</div>`:`<p class="note">ساعت خواب و بیداری را بزن تا مدت خوابت حساب شود.</p>`;
+  return`<div class="card checkin"><h2>${greet(k)}</h2>
+   <div class="q">😴 ${isT?'دیشب':'شب قبلش'} چطور خوابیدی؟</div>
+   <div class="moods ${s.q?'picked':''}">${sq}</div>
+   <div class="times"><label>🛌 ساعت خواب<input class="field" type="time" data-sl="bed" value="${s.bed}"></label><label>⏰ ساعت بیداری<input class="field" type="time" data-sl="wake" value="${s.wake}"></label></div>
+   ${durNote}
+   <div class="lab">چه چیزی روی خوابت اثر گذاشت؟ (اختیاری)</div>
+   <div class="acts">${SFACT.map(([key,l])=>`<button class="act ${SFACT_POS.has(key)?'pos':'neg'} ${s.f.includes(key)?'on':''}" data-sf="${key}" aria-pressed="${s.f.includes(key)}">${l}</button>`).join('')}</div>
+   <hr>
+   <div class="q">${isT?'☀️ امروز صبح چه حسی داری؟':'☀️ صبح این روز چه حسی داشتی؟'}</div>
+   <div class="moods ${am?'picked':''}">${mood}</div>
+   ${am?`<div class="done-line"><span>✓ حال صبح ثبت شد${am.note||am.acts?.length?' · با جزئیات':''}</span><button class="btn sm" data-e="${amId(k)}">✏️ جزئیات و یادداشت</button></div>`:`<p class="note">با یک ضربه ثبت می‌شود؛ هر وقت روز هم با دکمه‌ی + می‌توانی حالت را دوباره ثبت کنی.</p>`}
+  </div>`}
+function todayView(){
+  const k=cur,t=today(),d=dayDoc(k),plan=planFor(k),meta=habitMeta(),i=dayIdx(k);
+  const now=new Date(),hm=String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');
+  let nowId=null;if(k===t)plan.forEach(x=>{if(x.t<=hm)nowId=x.id});
+  const isOn=x=>x.h?(!!d.habits[x.h]||autoOn(d,x.h,k)):!!d.done[x.id];
+  const rItems=routines().flatMap(([,,a])=>a.map(x=>x[0]));
+  const extra=rItems.filter(h=>!plan.some(x=>x.h===h));
+  const doneN=plan.filter(isOn).length+extra.filter(h=>d.habits[h]||autoOn(d,h,k)).length;
+  const totN=plan.length+extra.length;
+  const pct=totN?Math.round(doneN/totN*100):0,night=k===t&&(now.getHours()>=18||now.getHours()<4);
+  const standalone=matchMedia('(display-mode: standalone)').matches||navigator.standalone;
+  $('v-today').innerHTML=`
+  <div class="daynav"><button class="rnd" id="dPrev" aria-label="روز قبل">›</button><div class="c"><b>${k===t?'امروز، ':''}${fmt(k,{weekday:'long'})}</b><small>${fmt(k,{day:'numeric',month:'long',year:'numeric'})}${d.plan?' · برنامه‌ی مخصوص این روز':''}</small></div><button class="rnd" id="dNext" aria-label="روز بعد">‹</button></div>
+  ${k!==t?`<p style="text-align:center;margin:-6px 0 10px"><button class="btn sm" id="dToday">برگشت به امروز</button></p>`:''}
+  ${installEvt&&!standalone?`<div class="card install"><span style="font-size:26px">📲</span><p><b>نصب روی گوشی</b><br><span class="note" style="margin:0">مثل یک اپ واقعی باز می‌شود و بدون اینترنت هم کار می‌کند.</span></p><button class="btn sm" id="doInstall">نصب</button></div>`:''}
+  ${checkinCard(k,d)}
+  <div class="card"><p class="quote">${night?'🌙':'☀️'} ${esc(night?PM[i]:AM[i])}<small>${night?'جمله‌ی آرامش امشب':'جمله‌ی انرژی امروز'}</small></p></div>
+  <div class="card"><div class="prog"><div class="bar"><span style="width:${pct}%"></span></div><b>${fa(pct)}٪</b></div><p class="note" style="margin-top:6px">${fa(doneN)} از ${fa(totN)} کار و روتین انجام شد · ${pct>=80?'عالی پیش می‌روی 🎉':pct>=50?'نصف راه را رفتی 💪':'قدم‌به‌قدم 🌱'}</p></div>
+  <div class="card"><h2>🎯 تمرکز امروز</h2>
+   <input class="field" data-day="intent" value="${esc(d.intent)}" placeholder="نیت امروزم: امروز می‌خواهم…" aria-label="نیت امروز">
+   <div class="lab">سه کار مهمی که امروز باید تمام شوند</div>
+   ${d.tasks.map((x,n)=>`<div class="task ${x.d?'done':''}"><input type="checkbox" data-day="tasks.${n}.d" ${x.d?'checked':''} aria-label="کار ${fa(n+1)} انجام شد"><input class="field" data-day="tasks.${n}.t" value="${esc(x.t)}" placeholder="${['کار مهم اول','کار مهم دوم','کار مهم سوم'][n]}"></div>`).join('')}
+   <div class="lab">🙏 سه چیزی که امروز بابتشان شکرگزارم</div>${d.grat.map((g,n)=>`<div class="task"><span style="width:24px;text-align:center;color:#f59e0b;font-weight:800">${fa(n+1)}</span><input class="field" data-day="grat.${n}" value="${esc(g)}" placeholder="شکرگزارم برای…"></div>`).join('')}
+   <div class="lab">💧 آب امروز: ${fa(d.water)} از ۸ لیوان <span style="opacity:.8">(روی لیوان‌ها بزن)</span></div><div class="cups">${[1,2,3,4,5,6,7,8].map(n=>`<button class="cup ${n<=d.water?'on':''}" data-cup="${n}" aria-label="لیوان ${fa(n)}"></button>`).join('')}</div></div>
+  <div class="card"><h2>🗓️ برنامه‌ی ${k===t?'امروز':'این روز'} <small>برای ویرایش، روی هر کار بزن</small></h2>
+   <ul class="tl">${plan.map(x=>{const c=(CAT[x.c]||CAT.rest)[1],on=isOn(x);return`<li class="it ${on?'done':''} ${x.id===nowId?'now':''}" style="--c:${c}"><span class="tm">${faT(x.t)}</span><span class="em">${x.e||'•'}</span><button class="lb" data-edit="${x.id}">${esc(fill(x.l,k))}${x.id===nowId?'<small>⏳ الان وقت این کار است</small>':x.h&&meta[x.h]?`<small>${(CAT[meta[x.h].c]||CAT.rest)[0]} · در پیگیری عادت‌ها ثبت می‌شود</small>`:''}</button><button class="ck ${on?'on':''}" data-ck="${x.id}" aria-label="انجام شد" aria-pressed="${on}">${on?'✓':''}</button></li>`}).join('')}</ul>
+   <button class="addrow" id="addItem">➕ افزودن کار به برنامه</button>
+   ${d.plan?`<p style="text-align:center;margin:8px 0 0"><button class="btn sm" id="resetDay">↩️ برگشت به برنامه‌ی همیشگی ${WD[wdOf(k)]}</button></p>`:''}</div>
+  <div class="card"><h2>✅ روتین‌های روزانه <button class="btn sm" id="editR">${editR?'✔️ تمام':'✏️ ویرایش'}</button></h2>
+   ${editR?'<p class="note" style="margin:-4px 0 10px">برای حذف روی ✕ بزن، یا پایین هر دسته روتین تازه اضافه کن.</p>':''}
+   ${routines().map(([c,e,items],ci)=>{const col=CAT[c][1];return`<div class="cat" style="--c:${col}"><h3>${e} ${CAT[c][0]} <small>${fa(items.filter(([h])=>d.habits[h]||autoOn(d,h,k)).length)} از ${fa(items.length)}</small></h3><div class="chips">${items.map(([h,em,l])=>{const on=!!d.habits[h]||autoOn(d,h,k);return`<button class="hab ${on?'on':''}" style="--c:${col}" data-h="${h}" aria-pressed="${on}" ${AUTO[h]&&!editR?`title="خودکار: ${AUTO[h]}"`:''}>${em} ${esc(l)}${editR?`<span class="del" data-rm="${ci}:${h}" aria-label="حذف">✕</span>`:''}</button>`}).join('')}</div>
+   ${editR?`<div class="inline"><input class="field" data-newr="${ci}" placeholder="روتین تازه در «${CAT[c][0]}»، مثلاً 🧃 آب‌میوه"><button class="btn" data-addr="${ci}">افزودن</button></div>`:''}</div>`}).join('')}
+   ${editR?`<p style="text-align:center;margin:12px 0 0"><button class="btn sm" id="resetR">↩️ برگرداندن روتین‌های پیش‌فرض</button></p>`:''}</div>
+  <div class="card" style="border-top:4px solid #64748b"><h2>🌙 مرور شب</h2><p class="quote" style="font-size:15px;font-weight:500">🤍 ${esc(PM[i])}</p>
+   <div class="lab">🌟 بهترین لحظه‌ی امروز چه بود؟</div><textarea class="field" data-day="good" placeholder="یک لحظه‌ی خوب، هرقدر هم کوچک…">${esc(d.good)}</textarea>
+   <div class="lab">📚 امروز چه چیزی یاد گرفتم؟</div><textarea class="field" data-day="learn">${esc(d.learn)}</textarea>
+   <div class="lab">🚀 فردا چه چیزی را بهتر انجام بدهم؟</div><textarea class="field" data-day="tomorrow">${esc(d.tomorrow)}</textarea>
+   <div class="lab">📝 یادداشت آزاد</div><textarea class="field" data-day="note" placeholder="هر چیزی که دوست داری بنویسی…">${esc(d.note)}</textarea></div>`;
+}
+function setPath(o,p,v){const a=p.split('.');let x=o;for(let i=0;i<a.length-1;i++)x=x[a[i]];x[a[a.length-1]]=v}
+const rerender=()=>{const y=scrollY;refresh();scrollTo(0,y)};
+$('v-today').addEventListener('input',ev=>{const f=ev.target.dataset.day;if(!f)return;const d=dayDoc(cur);
+  const v=ev.target.type==='checkbox'?ev.target.checked:ev.target.value;setPath(d,f,v);
+  if(ev.target.type==='checkbox'){saveDay(cur,d);rerender()}else saveDayLater(cur,d)});
+$('v-today').addEventListener('change',ev=>{const f=ev.target.dataset.sl;if(!f)return;const d=dayDoc(cur);d.sleep[f]=ev.target.value;saveDay(cur,d);
+  if(f==='wake'&&autoOn(d,'wake',cur)&&!d.habits.wake)toast('☀️ سحرخیز! «بیداری ساعت ۰۶:۳۰» تیک خورد');rerender()});
+$('v-today').addEventListener('click',ev=>{
+  const b=ev.target.closest('button');if(!b)return;const d=dayDoc(cur);
+  if(b.id==='dPrev'){cur=shift(cur,-1);return rerender()}
+  if(b.id==='dNext'){cur=shift(cur,1);return rerender()}
+  if(b.id==='dToday'){cur=today();return rerender()}
+  if(b.id==='doInstall'&&installEvt){installEvt.prompt();installEvt.userChoice.finally(()=>{installEvt=null;rerender()});return}
+  if(b.dataset.sq){const n=+b.dataset.sq;d.sleep.q=d.sleep.q===n?0:n;saveDay(cur,d);return rerender()}
+  if(b.dataset.sf){const f=b.dataset.sf,a=d.sleep.f;a.includes(f)?a.splice(a.indexOf(f),1):a.push(f);saveDay(cur,d);return rerender()}
+  if(b.dataset.am){const n=+b.dataset.am,id=amId(cur),e=docs.get(id);
+    const ts=e?e.ts:(cur===today()?Date.now():new Date(dateOf(cur).setHours(8,0,0,0)).getTime());
+    put(id,{ts,mood:n,acts:e?.acts||[],note:e?.note||'',grat:e?.grat||['','','']});toast(`حال صبحت ثبت شد: ${MOODS[n][2]} ${MOODS[n][0]}`);return rerender()}
+  if(b.dataset.cup){const n=+b.dataset.cup;d.water=d.water===n?n-1:n;saveDay(cur,d);if(d.water===8)toast('💧 ۸ لیوان! آفرین');return rerender()}
+  if(b.dataset.ck){const x=planFor(cur).find(i=>i.id===b.dataset.ck);if(!x)return;
+    if(x.h){if(autoOn(d,x.h,cur)){autoMsg(x.h);return}d.habits[x.h]=!d.habits[x.h]}else d.done[x.id]=!d.done[x.id];
+    saveDay(cur,d);return rerender()}
+  if(b.dataset.edit)return openItem(b.dataset.edit);
+  if(b.id==='addItem')return openItem(null);
+  if(b.id==='resetDay'){d.plan=null;saveDay(cur,d);toast('برنامه‌ی همیشگی برگشت');return rerender()}
+  if(b.id==='editR'){editR=!editR;return rerender()}
+  const rm=ev.target.closest('[data-rm]');
+  if(rm){const[ci,h]=rm.dataset.rm.split(':');const cats=JSON.parse(JSON.stringify(routines()));cats[+ci][2]=cats[+ci][2].filter(x=>x[0]!==h);put('routines',{cats});return rerender()}
+  if(b.dataset.addr){const ci=+b.dataset.addr,inp=document.querySelector(`[data-newr="${ci}"]`),v=inp.value.trim();if(!v)return;
+    const m=v.match(/^(\p{Extended_Pictographic}[\u{FE0F}\u{200D}\p{Extended_Pictographic}]*)\s*(.*)$/u);const e=m?m[1]:'⭐',l=m?(m[2]||v):v;
+    const cats=JSON.parse(JSON.stringify(routines()));cats[ci][2].push(['r'+Date.now().toString(36),e,l]);put('routines',{cats});toast('روتین اضافه شد');return rerender()}
+  if(b.id==='resetR'){put('routines',null);toast('روتین‌های پیش‌فرض برگشتند');return rerender()}
+  if(b.dataset.h&&!editR){const h=b.dataset.h;if(autoOn(d,h,cur)){autoMsg(h);return}if(HARD.has(h)){toast('این مورد خودکار تیک می‌خورد؛ '+AUTO[h]);return}d.habits[h]=!d.habits[h];saveDay(cur,d);return rerender()}
+});
+
+/* ---------- صفحه‌ی بالاآینده (sheet) + دکمه‌ی برگشت اندروید ---------- */
+function openSheet(html){$('sheet').innerHTML=html;$('sheet').hidden=false;$('sheet').scrollTop=0;document.body.style.overflow='hidden';if(location.hash!=='#s')location.hash='s'}
+function hideSheet(){$('sheet').hidden=true;$('sheet').innerHTML='';document.body.style.overflow='';sheet=null}
+function closeSheet(){if(location.hash==='#s'){hideSheet();history.back()}else hideSheet()}
+addEventListener('hashchange',()=>{if(location.hash!=='#s'&&sheet)hideSheet()});
+
+/* ---------- ویرایش برنامه ---------- */
+function openItem(id){
+  const x=id?planFor(cur).find(i=>i.id===id):{id:null,t:'12:00',e:'⭐',l:'',c:'rest',h:''};
+  sheet={kind:'item',id,x:{...x}};
+  const meta=habitMeta(),w=WD[wdOf(cur)];
+  openSheet(`<div class="wrap"><div class="top"><h1 style="margin:0">${id?'ویرایش کار':'کار تازه'}</h1><button class="x" data-close aria-label="بستن">×</button></div>
+  <div class="lab">ساعت</div><input class="field" type="time" id="iT" value="${x.t}">
+  <div class="lab">عنوان</div><input class="field" id="iL" value="${esc(x.l)}" placeholder="مثلاً قهوه با دوستان">
+  ${x.l.includes('{')?'<p class="note">«{doc}» خودکار با اسم مستند همان هفته و «{chore}» با کار خانه‌ی همان روز جایگزین می‌شود.</p>':''}
+  <div class="lab">ایموجی: <b id="iEv" style="font-size:22px">${x.e}</b></div><div class="emo">${EMOJIS.map(e=>`<button data-emo="${e}">${e}</button>`).join('')}</div>
+  <div class="lab">دسته و رنگ</div><div class="colors">${Object.entries(CAT).map(([c,[n,col]])=>`<button data-cat="${c}" class="${x.c===c?'on':''}" style="background:${col}">${n}</button>`).join('')}</div>
+  <div class="lab">با تیک زدن این کار، کدام عادت ثبت شود؟</div><select class="field" id="iH"><option value="">هیچ‌کدام</option>${Object.entries(meta).map(([k,m])=>`<option value="${k}" ${x.h===k?'selected':''}>${m.e} ${esc(m.l)}</option>`).join('')}</select>
+  <div class="lab">این تغییر برای کدام روزها باشد؟</div><div class="seg"><label><input type="radio" name="sc" value="day" checked> فقط همین روز (${fmt(cur,{day:'numeric',month:'long'})})</label><label><input type="radio" name="sc" value="all"> همه‌ی ${w}‌ها</label></div>
+  </div><div class="save"><div>${id?'<button class="delb" id="iDel">🗑️ حذف</button>':''}<button class="pri" id="iSave">ذخیره</button></div></div>`);
+}
+function applyItem(del){
+  const s=sheet,x=s.x;x.t=$('iT').value||x.t;x.l=$('iL').value.trim()||x.l||'کار تازه';x.h=$('iH').value;
+  const scope=document.querySelector('[name=sc]:checked').value;
+  const edit=list=>{list=list.slice();const i=s.id?list.findIndex(z=>z.id===s.id):-1;
+    if(del){if(i>=0)list.splice(i,1)}else if(i>=0)list[i]={...x,id:s.id};else list.push({...x,id:'u'+Date.now().toString(36)});return list};
+  if(scope==='all'){const T=JSON.parse(JSON.stringify(tpl())),w=wdOf(cur);T.days[w]=edit(T.days[w]||[]);put('tpl',T);
+    const d=dayDoc(cur);if(d.plan){d.plan=edit(d.plan);saveDay(cur,d)}}
+  else{const d=dayDoc(cur);d.plan=edit(d.plan||planFor(cur));saveDay(cur,d)}
+  closeSheet();toast(del?'حذف شد':'ذخیره شد ✓');refresh();
+}
+
+/* ---------- دفتر (فید روزها و حال‌ها) ---------- */
+function feedView(){
+  const byDay=new Map();entries().forEach(e=>{const k=kOf(e.ts);if(!byDay.has(k))byDay.set(k,[]);byDay.get(k).push(e)});
+  const t=today();[...docs.keys()].filter(id=>id.startsWith('d-')).forEach(id=>{const k=id.slice(2);if(hasPage(dayDoc(k))&&!byDay.has(k))byDay.set(k,[])});
+  const days=[...byDay].sort((a,b)=>a[0]<b[0]?1:-1);
+  $('v-feed').innerHTML=`<h1>📖 دفتر من</h1><div class="big"><div><b>🔥 ${fa(pageStreak())}</b><small>روز پشت سر هم</small></div><div><b>${fa(days.length)}</b><small>روز ثبت‌شده</small></div><div><button class="btn sm" id="copyAll" style="width:100%;height:100%">📋 کپی متن همه</button></div></div>${days.length?days.map(([k,l])=>`<div class="day">${k===t?'امروز':k===shift(t,-1)?'دیروز':fmt(k,{weekday:'long',day:'numeric',month:'long'})}</div>${pageCard(k)}${l.map(entryCard).join('')}`).join(''):'<div class="card empty">هنوز چیزی ثبت نکرده‌ای.<br>از صفحه‌ی «امروز» حال صبحت را ثبت کن یا دکمه‌ی + را بزن 💛</div>'}`;
+}
+const hasPage=d=>!!(d.intent||d.grat.some(Boolean)||d.good||d.learn||d.tomorrow||d.note||d.tasks.some(t=>t.t)||hasSleep(d.sleep));
+const sleepLine=s=>{const p=[];if(s.bed&&s.wake)p.push(faT(s.bed)+' تا '+faT(s.wake)+' ('+durTxt(sleepDur(s))+')');if(s.q)p.push(SLEEPQ[s.q][1]+' '+SLEEPQ[s.q][0]);if(s.f.length)p.push(s.f.map(f=>(SFACT.find(x=>x[0]===f)||[,f])[1]).join('، '));return p.join(' · ')};
+function pageCard(k){const d=dayDoc(k);if(!hasPage(d))return'';const r=(e,l,v)=>v?`<p class="note" style="color:var(--ink)">${e} <b>${l}:</b> ${esc(v)}</p>`:'';
+  return`<button class="entry" data-page="${k}" style="grid-template-columns:minmax(0,1fr);border-inline-start:4px solid #f59e0b">${r('😴','خواب',hasSleep(d.sleep)?sleepLine(d.sleep):'')}${r('🎯','نیت',d.intent)}${r('✅','کارهای مهم',d.tasks.filter(t=>t.t).map(t=>(t.d?'✓ ':'○ ')+t.t).join('، '))}${r('🙏','شکرگزاری',d.grat.filter(Boolean).join('، '))}${r('🌟','بهترین لحظه',d.good)}${r('📚','یاد گرفتم',d.learn)}${r('🚀','برای فردا',d.tomorrow)}${r('📝','یادداشت',d.note)}</button>`}
+function pageStreak(){const has=k=>hasPage(dayDoc(k))||entries().some(e=>kOf(e.ts)===k);let k=today(),n=0;if(!has(k))k=shift(k,-1);while(has(k)&&n<1000){n++;k=shift(k,-1)}return n}
+async function copyText(txt){try{await navigator.clipboard.writeText(txt);return true}catch(e){try{const ta=document.createElement('textarea');ta.value=txt;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();const ok=document.execCommand('copy');ta.remove();return ok}catch(_){return false}}}
+$('v-feed').addEventListener('click',async ev=>{const p=ev.target.closest('[data-page]');if(p){cur=p.dataset.page;show('today');return}
+  if(ev.target.closest('#copyAll')){const ks=[...new Set([...docs.keys()].filter(i=>i.startsWith('d-')).map(i=>i.slice(2)).concat(entries().map(e=>kOf(e.ts))))].sort();
+    const txt=ks.map(k=>{const d=dayDoc(k);return[fmt(k,{weekday:'long',day:'numeric',month:'long',year:'numeric'}),hasSleep(d.sleep)&&'خواب: '+sleepLine(d.sleep),d.intent&&'نیت: '+d.intent,d.tasks.some(t=>t.t)&&'کارهای مهم: '+d.tasks.filter(t=>t.t).map(t=>(t.d?'✓ ':'○ ')+t.t).join('، '),d.grat.some(Boolean)&&'شکرگزاری: '+d.grat.filter(Boolean).join('، '),d.good&&'بهترین لحظه: '+d.good,d.learn&&'یاد گرفتم: '+d.learn,d.tomorrow&&'برای فردا: '+d.tomorrow,d.note&&'یادداشت: '+d.note,...entries().filter(e=>kOf(e.ts)===k).reverse().map(e=>'حال '+timeOf(e.ts)+': '+MOODS[e.mood][2]+' '+MOODS[e.mood][0]+(e.acts?.length?' — '+e.acts.map(actLabel).join('، '):'')+(e.note?' — '+e.note:''))].filter(Boolean).join('\n')}).join('\n\n———\n\n');
+    toast(await copyText(txt)?'📋 متن همه‌ی روزها کپی شد':'کپی نشد')}});
+function actLabel(a){const m=habitMeta();if(m[a])return m[a].e+' '+m[a].l;if(DERIVED[a])return DERIVED[a];const n=NEG.concat(OTHER).find(x=>x[0]===a);if(n)return n[1];const c=(settings().custom||[]).find(x=>x.k===a);return c?c.l:a}
+const entryCard=e=>`<button class="entry" data-e="${e.id}">${face(e.mood,52)}<div><div class="mt" style="color:var(${MOODS[e.mood][1]})">${MOODS[e.mood][0]}<span>${e.id.startsWith('en-am-')?'حال صبح · ':''}${timeOf(e.ts)}</span></div>${e.acts?.length?`<div class="tags">${e.acts.map(a=>`<span class="tag">${esc(actLabel(a))}</span>`).join('')}</div>`:''}${(e.grat||[]).filter(Boolean).length?`<p class="note">🙏 ${esc(e.grat.filter(Boolean).join('، '))}</p>`:''}${e.note?`<p class="note">${esc(e.note)}</p>`:''}</div></button>`;
+document.addEventListener('click',ev=>{const e=ev.target.closest('[data-e]');if(e&&!$('sheet').contains(e))openMood(e.dataset.e)});
+
+/* ---------- ثبت حال ---------- */
+function openMood(id){
+  const e=id?docs.get(id):null,off=new Date().getTimezoneOffset()*6e4,isAm=!!id&&id.startsWith('en-am-');
+  sheet={kind:'mood',id:id||null,mood:e?e.mood:0,acts:new Set(e?.acts||[]),grat:[0,1,2].map(i=>e?.grat?.[i]||'')};
+  const ts=e?e.ts:Date.now(),custom=settings().custom||[];
+  const groups=routines().map(([c,em,a])=>[em+' '+CAT[c][0],a.filter(x=>!HARD.has(x[0])).map(([k,e,l])=>[k,e+' '+l])]).concat([["🗓️ برنامه‌ی هفتگی",WEEKLY.map(([k,e,l])=>[k,e+' '+l])],["💛 آدم‌ها و لحظه‌ها",OTHER.concat(custom.map(c=>[c.k,c.l]))],["⚠️ عادت‌هایی که می‌خواهم کمشان کنم",NEG.map(x=>[x[0],x[1],1])]]);
+  openSheet(`<div class="wrap"><div class="top"><h1 style="margin:0">${isAm?'حال صبح':id?'ویرایش حال':'الان چه حسی داری؟'}</h1><button class="x" data-close aria-label="بستن">×</button></div>
+  <div class="moods ${sheet.mood?'picked':''}" id="mRow">${[5,4,3,2,1].map(n=>`<button class="mood ${sheet.mood===n?'on':''}" data-m="${n}" aria-pressed="${sheet.mood===n}">${face(n,54)}${MOODS[n][0]}</button>`).join('')}</div>
+  ${isAm?'':`<div class="lab">زمان</div><input class="field" type="datetime-local" id="sts" value="${new Date(ts-off).toISOString().slice(0,16)}" aria-label="زمان">`}
+  <div class="grp"><h3>📝 چه خبر؟</h3><textarea class="field" id="snote" placeholder="چه اتفاقی افتاد؟ چه حسی داشتی؟">${esc(e?.note||'')}</textarea></div>
+  <div class="q" style="margin-top:18px">امروز چه کارهایی کردی؟</div>
+  <p class="note" style="margin-top:0">هر چیزی را اینجا انتخاب کنی، در «عادت‌ها» هم تیک می‌خورد.</p>
+  ${groups.map(([g,a],gi)=>`<div class="grp"><h3>${g}</h3><div class="acts" data-gi="${gi}">${a.map(([k,l,n])=>`<button class="act ${n?'neg':''} ${sheet.acts.has(k)?'on':''}" data-a="${k}">${esc(l)}</button>`).join('')}</div></div>`).join('')}
+  <div class="inline"><input class="field" id="newAct" placeholder="فعالیت تازه، مثلاً 🎨 نقاشی"><button class="btn" id="addAct">افزودن</button></div>
+  <div class="grp"><h3>🙏 شکرگزاری</h3>${sheet.grat.map((g,n)=>`<input class="field" style="margin-top:6px" data-g="${n}" value="${esc(g)}" placeholder="${fa(n+1)}. شکرگزارم برای…">`).join('')}</div>
+  </div><div class="save"><div>${id?'<button class="delb" id="mDel">🗑️ حذف</button>':''}<button class="pri" id="mSave" ${sheet.mood?'':'disabled'}>${sheet.mood?'ذخیره':'اول حالت را انتخاب کن'}</button></div></div>`);
+}
+$('sheet').addEventListener('click',ev=>{const b=ev.target.closest('button');if(!b||!sheet)return;
+  if(b.hasAttribute('data-close'))return closeSheet();
+  if(sheet.kind==='item'){
+    if(b.dataset.emo){sheet.x.e=b.dataset.emo;$('iEv').textContent=b.dataset.emo;return}
+    if(b.dataset.cat){sheet.x.c=b.dataset.cat;$('sheet').querySelectorAll('[data-cat]').forEach(z=>z.classList.toggle('on',z===b));return}
+    if(b.id==='iSave')return applyItem(false);if(b.id==='iDel')return applyItem(true);return}
+  if(b.dataset.m){sheet.mood=+b.dataset.m;$('mRow').classList.add('picked');$('sheet').querySelectorAll('.mood').forEach(x=>{x.classList.toggle('on',x===b);x.setAttribute('aria-pressed',x===b)});const s=$('mSave');s.disabled=false;s.textContent='ذخیره';return}
+  if(b.dataset.a){const a=b.dataset.a;sheet.acts.has(a)?sheet.acts.delete(a):sheet.acts.add(a);b.classList.toggle('on');return}
+  if(b.id==='addAct'){const l=$('newAct').value.trim();if(!l)return;const c=(settings().custom||[]).slice(),k='c'+Date.now().toString(36);c.push({k,l});put('settings',{custom:c});sheet.acts.add(k);
+    const nb=document.createElement('button');nb.className='act on';nb.dataset.a=k;nb.textContent=l;$('sheet').querySelector(`[data-gi="${routines().length+1}"]`).appendChild(nb);$('newAct').value='';toast('اضافه شد');return}
+  if(b.id==='mDel'){put(sheet.id,null);closeSheet();refresh();toast('حذف شد');return}
+  if(b.id==='mSave'){const old=sheet.id?docs.get(sheet.id):null,inp=$('sts'),v=inp?inp.value:'';let ts=old?old.ts:Date.now();if(v){const t=new Date(v).getTime();if(!isNaN(t))ts=t}
+    const id=sheet.id||'en-'+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+    put(id,{ts,mood:sheet.mood,acts:[...sheet.acts],note:$('snote').value.trim(),grat:sheet.grat.map(s=>s.trim())});closeSheet();refresh();toast('ذخیره شد 💛')}});
+$('sheet').addEventListener('input',ev=>{if(sheet?.kind==='mood'&&ev.target.dataset.g)sheet.grat[+ev.target.dataset.g]=ev.target.value});
+
+/* ---------- پیگیری عادت‌ها ---------- */
+function habitsView(){
+  const ws=shift(weekStartOf(today()),-7*wkOff),wk=[0,1,2,3,4,5,6].map(i=>shift(ws,i)),t=today(),sets=wk.map(k=>k<=t?actsOn(k):new Set());
+  let total=0,hit=0;
+  const row=(h,e,l,target,col)=>{const c=sets.filter(s=>s.has(h)).length;total++;if(c>=target)hit++;
+    return`<span class="n">${e} ${esc(l)}${AUTO[h]?' <small style="color:var(--soft)">· خودکار</small>':''}</span>${wk.map((k,i)=>`<button class="cell ${sets[i].has(h)?'on':''}" style="--c:${col}" data-hk="${k}" data-hh="${h}" ${k>t||HARD.has(h)?'disabled':''} aria-label="${esc(l)} ${WD[i]}">${sets[i].has(h)?'✓':''}</button>`).join('')}<span class="cnt ${c>=target?'ok':''}">${fa(c)}/${fa(target)}</span>`};
+  const body=routines().map(([c,e,items])=>`<div class="g" style="--c:${CAT[c][1]}">${e} ${CAT[c][0]}</div>${items.map(([h,em,l])=>row(h,em,l,WEEKDAY_TARGET.has(h)?6:7,CAT[c][1])).join('')}`).join('')
+   +`<div class="g" style="--c:${CAT.fun[1]}">🗓️ برنامه‌ی هفتگی</div>${WEEKLY.map(([h,e,l,tg,c])=>row(h,e,l,tg,CAT[c][1])).join('')}`;
+  let st=0,k=t;const any=s=>s.size>0;if(!any(actsOn(k)))k=shift(k,-1);while(any(actsOn(k))&&st<400){st++;k=shift(k,-1)}
+  $('v-habits').innerHTML=`<h1>✅ پیگیری عادت‌ها</h1>
+  <div class="daynav"><button class="rnd" id="wPrev" aria-label="هفته‌ی قبل">›</button><div class="c"><b>${wkOff===0?'این هفته':wkOff===1?'هفته‌ی قبل':fa(wkOff)+' هفته پیش'}</b><small>${fmt(wk[0],{day:'numeric',month:'long'})} تا ${fmt(wk[6],{day:'numeric',month:'long'})}</small></div><button class="rnd" id="wNext" aria-label="هفته‌ی بعد" ${wkOff===0?'disabled':''}>‹</button></div>
+  <div class="big"><div><b>${fa(hit)} از ${fa(total)}</b><small>به هدف هفته رسیده</small></div><div><b>🔥 ${fa(st)}</b><small>روز پشت سر هم</small></div><div><b>${fa(total?Math.round(hit/total*100):0)}٪</b><small>موفقیت این هفته</small></div></div>
+  <div class="card"><div class="grid">${wk.map((k,i)=>`<span class="h ${k===t?'t':''}">${WD[i].slice(0,1)}<br>${fa(pparts(dateOf(k)).day)}</span>`).join('')}<span class="h">هدف</span>${body}</div></div>
+  <p class="note" style="text-align:center">تیک‌های صفحه‌ی «امروز»، برنامه و ثبت حال، همه اینجا جمع می‌شوند. برای عوض کردن تیک هر روز، روی دایره‌اش بزن.</p>`;
+}
+$('v-habits').addEventListener('click',ev=>{const b=ev.target.closest('button');if(!b)return;
+  if(b.id==='wPrev'){wkOff++;return habitsView()}if(b.id==='wNext'&&wkOff>0){wkOff--;return habitsView()}
+  if(b.dataset.hk){const k=b.dataset.hk,h=b.dataset.hh,d=dayDoc(k),inEntry=entries().some(e=>kOf(e.ts)===k&&(e.acts||[]).includes(h));
+    if(!d.habits[h]&&autoOn(d,h,k)){autoMsg(h);return}
+    if(inEntry&&!d.habits[h]){toast('این تیک از ثبت حال آمده؛ از «دفتر» ویرایشش کن');return}
+    d.habits[h]=!d.habits[h];saveDay(k,d);rerender()}});
+
+/* ---------- آمار ---------- */
+const REMIND=[["06:40","😴","ثبت خواب دیشب و حال صبح","دیشب چطور خوابیدی؟ امروز صبح چه حسی داری؟"],["06:50","💊","قرص آهن","وقت قرص آهن است."],["10:00","💧","آب بخور","تا الان چند لیوان آب خوردی؟"],["15:00","💧","آب بخور","یک لیوان آب بخور و در اپ ثبتش کن."],["21:30","📝","منیزیم و ۳ کار مهم فردا","منیزیم یادت نرود. ۳ کار مهم فردا را بنویس."],["22:10","🌙","مرور شب","چند دقیقه وقت بگذار و مرور شب را پر کن."]];
+function remindUrl([t,e,l,body]){const n=new Date(),[h,m]=t.split(':').map(Number),s=new Date(n.getFullYear(),n.getMonth(),n.getDate(),h,m);if(s<n)s.setDate(s.getDate()+1);
+  const f=d=>d.getFullYear()+String(d.getMonth()+1).padStart(2,'0')+String(d.getDate()).padStart(2,'0')+'T'+String(d.getHours()).padStart(2,'0')+String(d.getMinutes()).padStart(2,'0')+'00';
+  const en=new Date(s.getTime()+10*6e4),tz=Intl.DateTimeFormat().resolvedOptions().timeZone||'Asia/Tehran';
+  return'https://calendar.google.com/calendar/render?'+new URLSearchParams({action:'TEMPLATE',text:e+' '+l,details:body+'\n\nاز ژورنال روزانه',dates:f(s)+'/'+f(en),ctz:tz,recur:'RRULE:FREQ=DAILY'})}
+let chartRO=null;
+function sleepCard(ks,dm){
+  const t=today(),rows=ks.map(k=>[k,dayDoc(k).sleep]),withD=rows.filter(([,s])=>sleepDur(s)),withQ=rows.filter(([,s])=>s.q);
+  if(!withD.length&&!withQ.length)return`<div class="card"><h2>😴 خواب</h2><div class="empty">هر صبح در صفحه‌ی «امروز» بزن که دیشب چطور خوابیدی؛ اینجا نمودار خوابت را می‌بینی.</div></div>`;
+  const avgD=withD.length?Math.round(withD.reduce((a,[,s])=>a+sleepDur(s),0)/withD.length):0;
+  const avgQ=withQ.length?withQ.reduce((a,[,s])=>a+s.q,0)/withQ.length:0;
+  const last=[];for(let i=13;i>=0;i--)last.push(shift(t,-i));
+  const H=600; /* ۱۰ ساعت = ارتفاع کامل */
+  const bars=last.map(k=>{const s=dayDoc(k).sleep,m=sleepDur(s),q=s.q;const h=m?Math.max(6,Math.min(m,H)/H*100):(q?6:0);
+    return`<div class="col" title="${fmt(k,{day:'numeric',month:'long'})}: ${durTxt(m)}${q?' · '+SLEEPQ[q][0]:''}"><span class="b" style="height:${h}%;background:${q?`var(${MOODS[q][1]})`:'var(--soft)'};opacity:${m||q?1:.25}"></span><small>${fa(pparts(dateOf(k)).day)}</small></div>`}).join('');
+  /* خواب و حال */
+  const good=[],bad=[];ks.forEach(k=>{const q=dayDoc(k).sleep.q;if(!q||!dm.has(k))return;if(q>=4)good.push(dm.get(k));else if(q<=2)bad.push(dm.get(k))});
+  const av=a=>a.reduce((x,y)=>x+y,0)/a.length;
+  let ins='';if(good.length&&bad.length){const g=av(good),b=av(bad);ins=`<div class="insight">💡 روزهایی که خوب خوابیدی، میانگین حالت <b>${fa(g.toFixed(1))}</b> از ۵ بود؛ روزهایی که بد خوابیدی <b>${fa(b.toFixed(1))}</b>.</div>`}
+  else if(withQ.length>=3)ins=`<div class="insight">💡 چند روز دیگر خواب و حال را ثبت کن تا ببینی خواب چقدر روی حالت اثر دارد.</div>`;
+  const fc={};rows.forEach(([,s])=>s.f.forEach(f=>fc[f]=(fc[f]||0)+1));const topF=Object.entries(fc).sort((a,b)=>b[1]-a[1]).slice(0,5);
+  const fl=topF.length?`<div class="lab" style="margin-top:14px">بیشترین اثر روی خوابت (۳۰ روز)</div>${topF.map(([f,c])=>`<div class="hrow"><span>${esc((SFACT.find(x=>x[0]===f)||[,f])[1])}</span><div class="hbar"><span style="width:${c/Math.max(withQ.length,withD.length,1)*100}%;background:var(${SFACT_POS.has(f)?'--m5':'--m2'})"></span></div><b>${fa(c)}</b></div>`).join('')}`:'';
+  return`<div class="card"><h2>😴 خواب <small>۳۰ روز اخیر</small></h2>
+   <div class="big"><div><b>${durShort(avgD)}</b><small>میانگین مدت</small></div><div><b>${avgQ?SLEEPQ[Math.round(avgQ)][1]+' '+fa(avgQ.toFixed(1)):'—'}</b><small>میانگین کیفیت از ۵</small></div><div><b>${fa(Math.max(withD.length,withQ.length))}</b><small>شب ثبت‌شده</small></div></div>
+   <div class="lab">۱۴ شب اخیر · ارتفاع = مدت خواب، رنگ = کیفیت</div>
+   <div class="sbars"><div class="goal" style="bottom:${18+Math.round(480/H*120)}px"><span>۸ ساعت</span></div>${bars}</div>
+   ${ins}${fl}</div>`}
+function statsView(){
+  const t=today(),from=shift(t,-29),dm=dayMood();const ks=[];for(let k=from;k<=t;k=shift(k,1))ks.push(k);
+  const sets=new Map(ks.map(k=>[k,actsOn(k)]));
+  const es=entries().filter(e=>kOf(e.ts)>=from),cnt=[0,0,0,0,0,0];es.forEach(e=>cnt[e.mood]++);
+  const freq={};sets.forEach(s=>s.forEach(a=>freq[a]=(freq[a]||0)+1));
+  const top=Object.entries(freq).sort((a,b)=>b[1]-a[1]).slice(0,10);
+  const md=ks.filter(k=>dm.has(k)),eff=[];
+  Object.keys(freq).forEach(a=>{const w=md.filter(k=>sets.get(k).has(a)),wo=md.filter(k=>!sets.get(k).has(a));if(w.length<2||wo.length<2)return;const av=l=>l.reduce((s,k)=>s+dm.get(k),0)/l.length;eff.push([a,av(w)-av(wo)])});
+  eff.sort((a,b)=>b[1]-a[1]);const effL=eff.slice(0,5).concat(eff.length>5?eff.slice(-3).filter(x=>x[1]<0):[]);
+  /* تقویم شمسی */
+  const now=new Date(),tp=pparts(now);let y=tp.year,m=tp.month-calOff;while(m<1){m+=12;y--}
+  let d=new Date(now);d.setDate(d.getDate()-calOff*31-tp.day-3);for(let g=0;g<80;g++){const p=pparts(d);if(p.year===y&&p.month===m&&p.day===1)break;d.setDate(d.getDate()+1)}
+  const first=new Date(d),days=[];while(pparts(d).month===m){days.push(keyOf(d));d.setDate(d.getDate()+1)}
+  const avg=days.map(k=>dm.get(k)).filter(Boolean);
+  $('v-stats').innerHTML=`<h1>📊 آمار</h1>
+  <div class="card"><div class="mhead"><button class="rnd" id="cPrev" aria-label="ماه قبل">›</button><b>${first.toLocaleDateString('fa-IR-u-ca-persian',{month:'long',year:'numeric'})}</b><button class="rnd" id="cNext" aria-label="ماه بعد" ${calOff===0?'disabled':''}>‹</button></div>
+  <div class="cal">${['ش','ی','د','س','چ','پ','ج'].map(w=>`<span class="wd">${w}</span>`).join('')}${'<span></span>'.repeat((first.getDay()+1)%7)}${days.map(k=>{const v=dm.get(k);return`<button data-k="${k}" class="${k===t?'t':''}" ${k>t?'disabled':''} style="${v?`background:var(${MOODS[Math.round(v)][1]});color:#fff;font-weight:800`:''}" aria-label="${fmt(k,{day:'numeric',month:'long'})}${v?' · '+MOODS[Math.round(v)][0]:''}">${fa(pparts(dateOf(k)).day)}</button>`}).join('')}</div>
+  <div class="legend">${[5,4,3,2,1].map(n=>`<span><i style="background:var(${MOODS[n][1]})"></i>${MOODS[n][2]} ${MOODS[n][0]}</span>`).join('')}</div>
+  <p class="note">روی هر روز بزن تا حال‌های آن روز را ببینی.</p>
+  <div id="cDay"></div></div>
+  <div class="big"><div><b>${fa(avg.length)}</b><small>روز با ثبت حال (این ماه)</small></div><div><b>${avg.length?MOODS[Math.round(avg.reduce((a,b)=>a+b,0)/avg.length)][2]+' '+fa((avg.reduce((a,b)=>a+b,0)/avg.length).toFixed(1)):'—'}</b><small>میانگین حال از ۵</small></div><div><b>${fa(es.length)}</b><small>ثبت در ۳۰ روز</small></div></div>
+  ${sleepCard(ks,dm)}
+  <div class="card"><h2>📈 نمودار حال <small>۳۰ روز اخیر</small></h2>${md.length?'<div class="fig" id="chart"><svg></svg></div>':'<div class="empty">بعد از چند بار ثبت حال، نمودار اینجا نشان داده می‌شود.</div>'}</div>
+  <div class="card"><h2>😊 حال‌ها چند بار؟</h2>${[5,4,3,2,1].map(n=>`<div class="hrow"><span>${MOODS[n][2]} ${MOODS[n][0]}</span><div class="hbar"><span style="width:${es.length?cnt[n]/es.length*100:0}%;background:var(${MOODS[n][1]})"></span></div><b>${fa(cnt[n])}</b></div>`).join('')}</div>
+  <div class="card"><h2>🏆 پرتکرارترین‌ها <small>چند روز از ۳۰ روز</small></h2>${top.length?top.map(([a,c])=>`<div class="hrow"><span>${esc(actLabel(a))}</span><div class="hbar"><span style="width:${c/30*100}%;background:${NEGSET.has(a)?'var(--m1)':'var(--m5)'}"></span></div><b>${fa(c)}</b></div>`).join(''):'<div class="empty">هنوز چیزی ثبت نشده.</div>'}</div>
+  <div class="card"><h2>💡 چه چیزی حالم را بهتر می‌کند؟</h2>${effL.length?'<p class="note" style="margin:0 0 8px">میانگین حال روزهایی که این کار را کردی، در مقایسه با روزهایی که نکردی.</p>'+effL.map(([a,v])=>`<div class="hrow"><span>${esc(actLabel(a))}</span><div class="hbar"><span style="width:${Math.min(Math.abs(v)/2*100,100)}%;background:var(${v>=0?'--m5':'--m1'})"></span></div><b>${v>=0?'+':'−'}${fa(Math.abs(v).toFixed(1))}</b></div>`).join(''):'<div class="empty">برای این بخش، چند روز ثبت حال لازم است.</div>'}</div>
+  <div class="card"><h2>⏰ یادآورهای روزانه</h2>
+   <p class="note" style="margin:0 0 10px">روی هر کدام بزن تا به‌صورت تکرار روزانه در Google Calendar گوشی‌ات ثبت شود؛ تقویم سر وقت خبرت می‌کند. ساعت را بعداً در خود تقویم هم می‌توانی عوض کنی.</p>
+   ${REMIND.map(([t,e,l],i)=>`<button class="btn full" data-rem="${i}" style="display:flex;justify-content:space-between;align-items:center;margin-top:6px"><span>${e} ${l}</span><b>${faT(t)}</b></button>`).join('')}</div>
+  <div class="card"><h2>💾 پشتیبان‌گیری</h2>
+   <p class="note" style="margin:0 0 10px">همه‌ی نوشته‌هایت فقط روی همین گوشی ذخیره می‌شوند. هر هفته یک فایل پشتیبان بگیر و جای امنی نگهش دار (مثلاً «پیام‌های ذخیره‌شده»ی تلگرام یا گوگل درایو).</p>
+   <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn" id="backup" style="flex:1">⬇️ گرفتن فایل پشتیبان</button><button class="btn" id="restore" style="flex:1">⬆️ بازگردانی از فایل</button></div>
+   <p class="note">آخرین پشتیبان: ${(()=>{const b=settings().lastBackup;return b?new Date(b).toLocaleDateString('fa-IR-u-ca-persian',{day:'numeric',month:'long'}):'هنوز نگرفته‌ای'})()}</p></div>`;
+  if(chartRO)chartRO.disconnect();const box=$('chart');if(!box)return;const svg=box.querySelector('svg');
+  const draw=()=>{const W=box.clientWidth,H=box.clientHeight,pl=8,pr=34,pt=10,pb=24,x=i=>W-pr-(i/(ks.length-1))*(W-pl-pr),yy=v=>pt+(5-v)/4*(H-pt-pb);
+    let g='';for(let v=1;v<=5;v++)g+=`<line x1="${pl}" x2="${W-pr}" y1="${yy(v)}" y2="${yy(v)}" stroke="var(--line)"/><text x="${W-pr+16}" y="${yy(v)+5}" font-size="14" text-anchor="middle">${MOODS[v][2]}</text>`;
+    const pts=ks.map((k,i)=>dm.has(k)?[x(i),yy(dm.get(k)),dm.get(k)]:null).filter(Boolean);
+    g+=`<polyline points="${pts.map(p=>p[0]+','+p[1]).join(' ')}" fill="none" stroke="var(--ink)" stroke-width="2" stroke-linejoin="round"/>`+pts.map(p=>`<circle cx="${p[0]}" cy="${p[1]}" r="4.5" fill="var(${MOODS[Math.round(p[2])][1]})" stroke="var(--card)" stroke-width="2"/>`).join('');
+    [[0,-22],[14,0],[29,24]].forEach(([i,dx])=>g+=`<text x="${x(i)+dx}" y="${H-6}" font-size="12" fill="var(--soft)" text-anchor="middle">${fmt(ks[i],{day:'numeric',month:'short'})}</text>`);svg.innerHTML=g};
+  chartRO=new ResizeObserver(draw);chartRO.observe(box);
+}
+async function doBackup(){
+  const data=JSON.stringify({app:'mona-journal',v:2,at:Date.now(),docs:[...docs]});
+  const name='journal-backup-'+today()+'.json',file=new File([data],name,{type:'application/json'});
+  const mark=()=>{const s={...settings(),lastBackup:Date.now()};put('settings',s);refresh()};
+  try{if(navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({files:[file],title:'پشتیبان ژورنال'});mark();toast('✓ فایل پشتیبان آماده شد');return}}catch(e){if(e&&e.name==='AbortError')return}
+  try{const a=document.createElement('a');a.href=URL.createObjectURL(file);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},2000);mark();toast('✓ در پوشه‌ی Downloads ذخیره شد')}catch(e){toast('ذخیره‌ی فایل ممکن نشد')}
+}
+$('restoreFile').addEventListener('change',async ev=>{const f=ev.target.files[0];ev.target.value='';if(!f)return;
+  try{const j=JSON.parse(await f.text()),list=Array.isArray(j)?j:j.docs;if(!Array.isArray(list))throw 0;let n=0;
+    list.forEach(([id,v])=>{if(typeof id!=='string'||!v||typeof v!=='object')return;const l=docs.get(id);if(!l||(v.updated||0)>=(l.updated||0)){docs.set(id,v);n++;if(db)put(id,v)}});
+    saveLocal();refresh();toast(`✓ ${fa(n)} مورد بازگردانی شد`)}catch(e){toast('این فایل، فایل پشتیبان ژورنال نیست')}});
+$('v-stats').addEventListener('click',ev=>{const b=ev.target.closest('button');if(!b)return;
+  if(b.dataset.rem){open(remindUrl(REMIND[+b.dataset.rem]),'_blank');return}if(b.id==='backup')return doBackup();if(b.id==='restore')return $('restoreFile').click();
+  if(b.id==='cPrev'){calOff++;return statsView()}if(b.id==='cNext'&&calOff>0){calOff--;return statsView()}
+  if(b.dataset.k){const k=b.dataset.k,l=entries().filter(e=>kOf(e.ts)===k),s=dayDoc(k).sleep;$('cDay').innerHTML=`<div class="day">${fmt(k,{weekday:'long',day:'numeric',month:'long'})}</div>`+(hasSleep(s)?`<p class="note" style="color:var(--ink)">😴 ${esc(sleepLine(s))}</p>`:'')+(l.length?l.map(entryCard).join(''):'<div class="empty">برای این روز حالی ثبت نشده.</div>')}});
+
+/* ---------- پوسته ---------- */
+function refresh(){({today:todayView,feed:feedView,habits:habitsView,stats:statsView})[view]()}
+function show(v){view=v;['today','feed','habits','stats'].forEach(x=>$('v-'+x).hidden=x!==v);document.querySelectorAll('nav [data-v]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.v===v));refresh();scrollTo(0,0)}
+document.querySelectorAll('nav [data-v]').forEach(b=>b.onclick=()=>show(b.dataset.v));
+$('add').onclick=()=>openMood(null);
+try{const s=JSON.parse(localStorage.getItem(LSKEY));if(Array.isArray(s))docs=new Map(s)}catch(e){}
+if(location.hash==='#s')history.replaceState(null,'',location.pathname+location.search);
+show('today');
+if(new URLSearchParams(location.search).has('add')){history.replaceState(null,'',location.pathname);openMood(null)}
+/* وقتی اپ بعد از چند ساعت دوباره باز می‌شود، «امروز» را به‌روز کن */
+let lastDay=today();document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&today()!==lastDay){if(cur===lastDay)cur=today();lastDay=today();if(!sheet)refresh()}});
+/* PWA */
+addEventListener('beforeinstallprompt',e=>{e.preventDefault();installEvt=e;if(view==='today'&&!sheet)rerender()});
+addEventListener('appinstalled',()=>{installEvt=null;toast('📲 نصب شد! از صفحه‌ی اصلی گوشی بازش کن');if(view==='today'&&!sheet)rerender()});
+if('serviceWorker' in navigator&&location.protocol.startsWith('http'))navigator.serviceWorker.register('sw.js').catch(()=>{});
+try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist()}catch(e){}
+/* همگام‌سازی ابری (فقط وقتی داخل Claude باز شود) */
+(async()=>{try{const c=window.claude;if(!c||!c.use)return;const[u,d]=await Promise.all([c.use('user'),c.use('db')]);if(!u||!d)return;const id=await u.id();if(!id)return;
+  uid=id;db=d;const to=setTimeout(()=>toast('اتصال کند است؛ داده‌های همین دستگاه نمایش داده می‌شود'),10000);
+  const q=await db.collection('data/users/'+uid).limit(1000).get();clearTimeout(to);
+  const seen=new Set();q.docs.forEach(x=>{seen.add(x.id);const v=x.data(),l=docs.get(x.id);if(!l||(v.updated||0)>=(l.updated||0))docs.set(x.id,v)});
+  for(const[k,v]of docs)if(!seen.has(k))put(k,v);saveLocal();if(!sheet)refresh()}catch(e){}})();
+}
+</script>
+</body>
+</html>
