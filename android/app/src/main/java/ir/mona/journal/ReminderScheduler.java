@@ -36,7 +36,7 @@ public final class ReminderScheduler {
         if (s == null || s.isEmpty()) return;
         try {
             JSONArray a = new JSONArray(s);
-            for (int i = 0; i < a.length(); i++) {
+            for (int i = 0; i < a.length(); i++) try {
                 JSONObject o = a.getJSONObject(i);
                 int id = o.optInt("id", 0);
                 if (!o.optBoolean("on") || id < 1 || id > MAX_ID) continue;
@@ -63,10 +63,14 @@ public final class ReminderScheduler {
                     }
                 }
                 PendingIntent p = pending(c, id, o.optString("title"), body, PendingIntent.FLAG_UPDATE_CURRENT);
-                if (Build.VERSION.SDK_INT < 31 || am.canScheduleExactAlarms())
-                    am.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), p);
-                else
+                if (Build.VERSION.SDK_INT < 31 || am.canScheduleExactAlarms()) {
+                    // alarm-clock alarms are the only kind Samsung's battery saver never delays or drops
+                    Intent open = new Intent(c, MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    PendingIntent show = PendingIntent.getActivity(c, 2000 + id, open, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
+                    am.setAlarmClock(new AlarmManager.AlarmClockInfo(cal.getTimeInMillis(), show), p);
+                } else
                     am.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), p);
+            } catch (Exception ignored) {
             }
         } catch (Exception ignored) {
         }
